@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+    <table>
+        <tr>
+            <td>Name</td>
+            <td><input type="text" name="txtname" id=""value="{{editdata.publisher_name}}"></td>
+        </tr>
+        <tr>
+            <td>Contact</td>
+            <td><input type="text" name="txtcontact" id=""value="{{editdata.publisher_contact}}"></td>
+        </tr>
+        <tr>
+            <td>Address</td>
+            <td>
+                <textarea name="txtadd" rows="6" cols="20"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>Photo</td>
+            <td><input type="file" name="photo"  required ></td>
+        </tr>
+        <tr>
+            <td>Proof</td>
+            <td><input type="file" name="proof"></td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td><input type="email" name="txtemail" id=""value="{{editdata.publisher_email}}"></td></tr>
+        <tr>
+            <td>Password</td>
+            <td><input type="password" name="txtpassword" id=""value="{{editdata.publisher_password}}"></td>
+        </tr>
+        <tr>
+            <td colspan="2" align="center"><input type="submit" value="save">
+            <input type="reset" value="cancel"></td>
+        </tr>
+    </form>
+</table>
+</body>
+</html>

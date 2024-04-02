@@ -1,0 +1,43 @@
+{% extends 'Admin/header.html' %}
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+   
+    <table border="1" align="center" cellpadding="10">
+        <tr>
+            <td>SerialNo</td>
+            <td>Name</td>
+            <td>Contact</td>
+            <td>Address</td>
+            <td>Proof</td>
+            <td>Email</td>                                              
+            <td>Action</td>
+        </tr>
+        {% for i in userdata %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.agent_name}}</td>
+            <td>{{i.agent_contact}}</td>
+            <td>{{i.agent_address}}</td>
+            <td><img src="{{i.agent_photo.url}}" width="150" height="150" alt=""></td>
+            <td><img src="{{i.agent_proof.url}}" width="150" height="150" alt=""></td>
+            <td>{{i.agent_email}}</td>
+            <td>
+                <a href="{% url 'webadmin:acceptagent' i.id %}">Accept</a>
+                <a href="{% url 'webadmin:rejectagent' i.id %}">Reject</a>
+            </td>
+        </tr>
+        {% endfor %}
+
+    </table>
+</body>
+</html>
+{% endblock content %}

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <table border="1">
+        <tr>
+            <td>SerialNo</td>
+            <td>Name</td>
+            <td>Description</td>
+            <td>Price</td>
+            <td>Photo</td>
+            <td>Authorname</td>
+            <td>Genre</td>
+            <td>Quality</td>
+            <td>Action</td>
+        </tr>
+        {% for i in data %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.ubook_name}}</td>
+            <td>{{i.ubook_desc}}</td>
+            <td>{{i.ubook_price}}</td>
+            <td><img src="{{i.ubook_photo.url}}" width="150" height="150" alt=""></td>
+            <td>{{i.ubook_authname}}</td>
+            <td>{{i.ubook_genre.gen_name}}</td>
+            <td>{{i.ubook_qlty.quality_level}}</td>         
+            <td><a href="{% url 'User:UserBookDel' i.id %}">Accept</a>
+            </td>
+        </tr>
+        {% endfor %}
+</table>
+</body>
+</html>

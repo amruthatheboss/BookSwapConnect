@@ -1,0 +1,40 @@
+{% extends 'Admin/header.html' %}
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action=""method="post">
+        {% csrf_token %}
+    <table>
+        <tr>
+            <td>User Name</td>
+            <td> <input type="text" name="user_name" id="" value="{{editdata.u_name}}"></td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td> <input type="email" name="user_email" id="" value="{{editdata.email_name}}"></td>
+        </tr>
+        <tr>
+            <td>Password</td>
+            <td> <input type="password" name="txtpassword" id="" value="{{editdata.p_name}}"></td>
+        </tr>
+        <tr>
+            <td>Proof</td>
+            <td> <input type="text" name="txtproof" id="" value="{{editdata.gen_name}}"></td>
+        </tr>
+        <tr>
+            <td>Genre_ID</td>
+            <td></td>
+        </tr>
+    </table>      
+</body>
+</html>
+
+{% endblock content %}

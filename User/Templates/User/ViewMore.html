@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+   
+      
+            <p>{{ViewBook.ubook_name}}</p>
+            <p>{{ViewBook.ubook_desc}}</p>
+            <p>{{ViewBook.ubook_price}}</p>
+            <p><img src="{{ViewBook.ubook_photo.url}}" width="150" height="150" alt=""></p>
+            <p>{{ViewBook.ubook_authname}}</p>
+            <p>{{ViewBook.ubook_genre.gen_name}}</p>
+            <p>{{ViewBook.ubook_qlty.quality_level}}</p>
+
+            <a href="{% url 'User:Swaprequest' ViewBook.id %}">Swap</a>
+             <a href="{% url 'User:UserBookUpdate' ViewBook.id %}">Buy now</a>
+             <a href="{% url 'User:UserBookUpdate' ViewBook.id %}">view user</a>
+            
+       
+</body>
+
+</html>

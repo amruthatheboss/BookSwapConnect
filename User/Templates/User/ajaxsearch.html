@@ -1,0 +1,9 @@
+{% for i in data %}
+      
+<p>{{forloop.counter}}</p>
+<p>{{i.ubook_name}}</p>
+<p>{{i.ubook_price}}</p>
+<p><img src="{{i.ubook_photo.url}}" width="150" height="150" alt=""></p>
+
+
+{% endfor %}

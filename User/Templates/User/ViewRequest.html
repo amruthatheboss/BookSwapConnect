@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <table border="1">
+        <tr>
+            <td>SerialNo</td>
+            <td>Name</td>
+            <td>Link</td>
+            
+        </tr>
+        {% for i in ViewReq %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.fromuser_id.user_name}}</td>
+            <td><a href="{% url 'User:Viewbooks' i.fromuser_id.id %}">View Books</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</body>
+
+</html>
