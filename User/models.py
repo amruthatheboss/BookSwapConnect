@@ -1,6 +1,7 @@
 from django.db import models
 from Admin.models import *
 from Guest.models import *
+from Publisher.models import *
 
 # Create your models here.
 
@@ -13,6 +14,9 @@ class tbl_uaddbook(models.Model):
     ubook_genre=models.ForeignKey(tbl_genre, on_delete=models.CASCADE)
     ubook_qlty=models.ForeignKey(tbl_quality, on_delete=models.CASCADE)
     user=models.ForeignKey(tbl_user, on_delete=models.CASCADE)
+    user=models.ForeignKey(tbl_user, on_delete=models.CASCADE)
+    ubook_status = models.IntegerField(default="0")
+
     
 class tbl_swap(models.Model):
     swap_id=models.CharField(max_length=15)
@@ -20,6 +24,31 @@ class tbl_swap(models.Model):
     fromuser_id=models.ForeignKey(tbl_user, on_delete=models.CASCADE,related_name="fromuser_id")
     tobook_id=models.ForeignKey(tbl_uaddbook, on_delete=models.CASCADE,related_name="tobook_id")
     frombook_id=models.ForeignKey(tbl_uaddbook, on_delete=models.SET_NULL,related_name="frombook_id",null=True)
-    swap_status=models.CharField(max_length=15)
+    swap_status=models.IntegerField(default=0)
     swap_price=models.CharField(max_length=15)
     swap_paymentstatus=models.CharField(max_length=15)
+    agent = models.ForeignKey(tbl_agent,on_delete=models.CASCADE,null=True)
+
+class tbl_booking(models.Model):
+    booking_status = models.IntegerField(default=0)
+    booking_date = models.DateField(auto_now_add=True)
+    user = models.ForeignKey(tbl_user,on_delete=models.CASCADE)
+    booking_amount = models.IntegerField(default=0)
+
+class tbl_cart(models.Model):
+    cart_qty = models.IntegerField(default=1)
+    cart_status = models.IntegerField(default=0)
+    product = models.ForeignKey(tbl_paddbook,on_delete=models.CASCADE)
+    booking = models.ForeignKey(tbl_booking,on_delete=models.CASCADE)
+
+class tbl_complaint(models.Model):
+    complaint_id=models.CharField(max_length=15)
+    complaint_title=models.CharField(max_length=50)
+    complaint_desc=models.CharField(max_length=100)
+    complaint_status=models.IntegerField(default=0)
+    complaint_date=models.DateField(auto_now=True)
+    complaint_reply=models.CharField(max_length=100,null=True)
+    user_id=models.ForeignKey(tbl_user, on_delete=models.CASCADE,related_name="user_id",null=True)
+    publisher_id=models.ForeignKey(tbl_publisher, on_delete=models.CASCADE,related_name="publisher_id",null=True)
+    agent_id=models.ForeignKey(tbl_agent, on_delete=models.CASCADE,related_name="agent_id",null=True)
+

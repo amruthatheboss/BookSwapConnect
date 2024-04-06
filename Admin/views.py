@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from Admin.models import *
 from Guest.models import *
+from User.models import *
 
 #Disrict DB Operations
 def LoadAdminHome(request):
@@ -298,3 +299,33 @@ def Qualityupdate(request,eid):
         return redirect("webadmin:Quality")
     else:
         return render(request,"Admin\Quality.html",{"editdata":editdata})
+    
+def vieworders(request):
+    swap = tbl_swap.objects.all()
+    return render(request,"Admin/View_orders.html",{"swaping":swap})
+
+def completed(request,id):
+    swap = tbl_swap.objects.get(id=id)
+    swap.swap_status = 6
+    swap.save()
+    return redirect("webadmin:vieworders")
+
+def viewcomplaint(request):
+    userdata=tbl_user.objects.all()
+    publisherdata=tbl_publisher.objects.all()
+    usercomplaint=tbl_complaint.objects.filter(user_id__in=userdata)
+    publishercomplaint=tbl_complaint.objects.filter(publisher_id__in=publisherdata)
+    
+    return render(request,"Admin/Viewcomplaint.html",{'usercomplaint':usercomplaint,'publishercomplaint':publishercomplaint})
+
+def reply(request,id):
+    data= tbl_complaint.objects.get(id=id)
+    if request.method == 'POST':
+        reply = request.POST.get('txtreply')
+        data.complaint_reply=reply
+        data.complaint_status=1
+        data.save()
+        
+        return redirect('webadmin:viewcomplaint')
+    else:
+        return render(request, 'Admin/Reply.html', {'data':data})

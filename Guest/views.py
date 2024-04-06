@@ -77,6 +77,7 @@ def Login(request):
         usercount = tbl_user.objects.filter(user_email=request.POST.get("txt_email"),user_password=request.POST.get("txt_password")).count()
         publishercount = tbl_publisher.objects.filter(publisher_email=request.POST.get("txt_email"),publisher_password=request.POST.get("txt_password")).count()
         agentcount = tbl_agent.objects.filter(agent_email=request.POST.get("txt_email"),agent_password=request.POST.get("txt_password")).count()
+        admincount = tbl_admin.objects.filter(admin_email=request.POST.get("txt_email"),admin_password=request.POST.get("txt_password")).count()
         
         if usercount > 0:
             user = tbl_user.objects.get(user_email=request.POST.get("txt_email"),user_password=request.POST.get("txt_password"))
@@ -95,6 +96,12 @@ def Login(request):
             request.session["sid"] = agent.id
             request.session["uname"] = agent.agent_name
             return redirect("Agent:homepage")
+        
+        elif admincount > 0:
+            admin = tbl_admin.objects.get(admin_email=request.POST.get("txt_email"),admin_password=request.POST.get("txt_password"))
+            request.session["aid"] = admin.id
+            request.session["aname"] = admin.admin_name
+            return redirect("webadmin:LoadAdminHome")
 
         else:
             return render(request,"Guest/Login.html",{"msg":"Invalid Email Or Password"})

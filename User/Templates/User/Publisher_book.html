@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .sub {
+            padding: 20px;
+            background-color: #E1F5FE;
+            width: fit-content;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .main {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="main">
+        {% for i in book %}
+        <div class="sub">
+            <div><img src="{{i.pbook_photo.url}}" width="150" height="150" alt=""></div>
+            <div>Name :{{i.pbook_name}}</div>
+            <div>Rate :{{i.pbook_price}}</div>
+            <div><a href="">Add To Cart</a></div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

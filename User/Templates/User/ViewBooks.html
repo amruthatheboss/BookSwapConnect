@@ -28,7 +28,7 @@
             <td>{{i.ubook_authname}}</td>
             <td>{{i.ubook_genre.gen_name}}</td>
             <td>{{i.ubook_qlty.quality_level}}</td>         
-            <td><a href="{% url 'User:UserBookDel' i.id %}">Accept</a>
+            <td><a href="{% url 'User:Acceptbook' i.id sid %}">Accept</a>
             </td>
         </tr>
         {% endfor %}

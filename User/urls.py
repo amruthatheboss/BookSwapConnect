@@ -20,7 +20,17 @@ urlpatterns = [
 
     path('Swaprequest/<int:bid>',views.Swaprequest,name="Swaprequest"), 
     path('Viewrequest/',views.Viewrequest,name="Viewrequest"),
-    path('Viewbooks/<int:Fromid>',views.Viewbooks,name="Viewbooks"),
+    path('Viewbooks/<int:Fromid>/<int:sid>',views.Viewbooks,name="Viewbooks"),
 
+    path('Acceptbook/<int:bid>/<int:sid>',views.Acceptbook,name="Acceptbook"),
+
+    path('payment/<int:amt>/<int:sid>',views.payment,name="payment"),
+
+    path('mybooking/',views.mybooking,name="mybooking"),
+    path('view_publisher_book/',views.view_publisher_book,name="view_publisher_book"),
+
+     path('usercomplaint/',views.usercomplaint,name="usercomplaint"),
+
+     path('Viewcomplaints/',views.Viewcomplaints,name="Viewcomplaints")
 
 ]

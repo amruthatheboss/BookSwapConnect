@@ -12,16 +12,16 @@
     <table>
         <tr>
             <td>Name</td>
-            <td><input type="text" name="txtname" id=""value="{{editdata.publisher_name}}"></td>
+            <td><input type="text" name="txtname" id=""value="{{editdata.publisher_name}}" required></td>
         </tr>
         <tr>
             <td>Contact</td>
-            <td><input type="text" name="txtcontact" id=""value="{{editdata.publisher_contact}}"></td>
+            <td><input type="text" name="txtcontact" id=""value="{{editdata.publisher_contact}}" required></td>
         </tr>
         <tr>
             <td>Address</td>
             <td>
-                <textarea name="txtadd" rows="6" cols="20"></textarea>
+                <textarea name="txtadd" rows="6" cols="20" required></textarea>
             </td>
         </tr>
         <tr>
@@ -30,17 +30,17 @@
         </tr>
         <tr>
             <td>Proof</td>
-            <td><input type="file" name="proof"></td>
+            <td><input type="file" name="proof" required></td>
         </tr>
         <tr>
             <td>Email</td>
-            <td><input type="email" name="txtemail" id=""value="{{editdata.publisher_email}}"></td></tr>
+            <td><input type="email" name="txtemail" id=""value="{{editdata.publisher_email}}" required></td></tr>
         <tr>
             <td>Password</td>
-            <td><input type="password" name="txtpassword" id=""value="{{editdata.publisher_password}}"></td>
+            <td><input type="password" name="txtpassword" id=""value="{{editdata.publisher_password}}" required></td>
         </tr>
         <tr>
-            <td colspan="2" align="center"><input type="submit" value="save">
+            <td colspan="2" align="center"><input type="submit" value="Register">
             <input type="reset" value="cancel"></td>
         </tr>
     </form>

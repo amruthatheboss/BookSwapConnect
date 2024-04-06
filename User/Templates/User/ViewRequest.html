@@ -20,7 +20,7 @@
         <tr>
             <td>{{forloop.counter}}</td>
             <td>{{i.fromuser_id.user_name}}</td>
-            <td><a href="{% url 'User:Viewbooks' i.fromuser_id.id %}">View Books</a></td>
+            <td><a href="{% url 'User:Viewbooks' i.fromuser_id.id i.id %}">View Books</a></td>
         </tr>
         {% endfor %}
     </table>

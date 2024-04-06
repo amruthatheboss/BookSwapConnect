@@ -2,14 +2,21 @@ from django.shortcuts import render,redirect
 from Guest.models import *
 from Admin.models import *
 from Publisher.models import *
+from User.models import *
 # Create your views here.
 
 def homepage(request):
-    return render(request,"Publisher/HomePage.html")
+    if 'pid' in request.session:
+        return render(request,"Publisher/HomePage.html")
+    else:
+        return redirect("Guest:Login")
 
 def my_pro(request):
-    data=tbl_publisher.objects.get(id=request.session["pid"])
-    return render(request,"Publisher/MyProfile.html",{'data':data})
+    if 'pid' in request.session:
+        data=tbl_publisher.objects.get(id=request.session["pid"])
+        return render(request,"Publisher/MyProfile.html",{'data':data})
+    else:
+        return redirect("Guest:Login")
 
 def editprofile(request):
     prodata=tbl_publisher.objects.get(id=request.session["pid"])
@@ -38,31 +45,34 @@ def changepassword(request):
     else:
         return render(request,"Publisher/ChangePassword.html")
         
-def PublisherAddBook(request):                                          
-    pbookdata=tbl_genre.objects.all()
-    pbook = tbl_paddbook.objects.all()
-    if request.method =='POST':
-        pgen=tbl_genre.objects.get(id=request.POST.get('selgenre'))
-        pname = request.POST.get('txtname')
-        pdesc= request.POST.get('txtdesc')
-        pprice= request.POST.get('txtprice')
-        pphoto=request.FILES.get('photo')
-        pauthname= request.POST.get('txtaname')
-        pqty=request.POST.get('txtqty')
+def PublisherAddBook(request):   
+    if 'pid' in request.session:                                       
+        pbookdata=tbl_genre.objects.all()
+        pbook = tbl_paddbook.objects.all()
+        if request.method =='POST':
+            pgen=tbl_genre.objects.get(id=request.POST.get('selgenre'))
+            pname = request.POST.get('txtname')
+            pdesc= request.POST.get('txtdesc')
+            pprice= request.POST.get('txtprice')
+            pphoto=request.FILES.get('photo')
+            pauthname= request.POST.get('txtaname')
+            pqty=request.POST.get('txtqty')
 
 
-        tbl_paddbook.objects.create(
-            
-            pbook_name=pname,
-            pbook_desc=pdesc,
-            pbook_price=pprice,
-            pbook_photo=pphoto,
-            pbook_authname=pauthname,
-            pbook_genre=pgen,
-            pbook_qty=pqty,
-        )
-        return redirect('Publisher:PublisherAddBook')
-    return render(request, 'Publisher/PublisherAddBook.html',{'genre':pbookdata,'data':pbook})
+            tbl_paddbook.objects.create(
+                
+                pbook_name=pname,
+                pbook_desc=pdesc,
+                pbook_price=pprice,
+                pbook_photo=pphoto,
+                pbook_authname=pauthname,
+                pbook_genre=pgen,
+                pbook_qty=pqty,
+            )
+            return redirect('Publisher:PublisherAddBook')
+        return render(request, 'Publisher/PublisherAddBook.html',{'genre':pbookdata,'data':pbook})
+    else:
+        return redirect("Guest:Login")
 
 
 def PublisherBookdelete(request,id):
@@ -88,3 +98,34 @@ def PublisherBookupdate(request,eid):
             return render(request,"Publisher\PublisherAddBook.html",{"editdata":editdata,'genre':pbookdata})
 
 
+def publishercomplaint(request):
+    if 'pid' in request.session:          
+        publisher_id= tbl_publisher.objects.get(id=request.session['pid'])
+
+        if request.method =='POST':
+            complaint_title = request.POST.get('txttitle')
+            complaint_desc= request.POST.get('txtcomp')
+            
+
+            tbl_complaint.objects.create(
+                
+                complaint_title=complaint_title,
+                complaint_desc=complaint_desc,
+                publisher_id=publisher_id,
+            )
+            return redirect('Publisher:homepage')
+        return render(request, 'Publisher/Publishercomplaint.html',{"book":publisher_id})
+    else:
+        return redirect("Guest:Login")
+
+def Viewpublishercomplaints(request):
+    if 'pid' in request.session:      
+        pid = tbl_publisher.objects.get(id=request.session['pid'])
+        complaint=tbl_complaint.objects.filter(publisher_id=pid)
+        return render(request,'Publisher/Viewpcomplaint.html',{'complaint':complaint})
+    else:
+        return redirect("Guest:Login")
+
+def logout(request):
+    del request.session['pid']
+    return redirect("Guest:Login")

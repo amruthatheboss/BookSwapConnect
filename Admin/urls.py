@@ -1,5 +1,6 @@
 from django.urls import path
 from Admin import views
+ 
 
 app_name = "webadmin"
 
@@ -60,6 +61,12 @@ urlpatterns = [
     path('Quality/', views.Quality, name='Quality'),
     path('Qualitydel/<int:id>', views.Qualitydelete, name='Qualitydel'),
     path('Qualityupdate/<int:eid>',views.Qualityupdate,name="Qualityupdate"),
+
+    path('vieworders/', views.vieworders, name='vieworders'),
+    path('completed/<int:id>',views.completed,name="completed"),
+
+    path('Reply/<int:id>', views.reply, name='reply'),
+    path('Viewcomplaint/', views.viewcomplaint, name='viewcomplaint'),
 
 
 ]

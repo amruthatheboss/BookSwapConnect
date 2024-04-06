@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <table cellpadding="10">
+        <tr>
+            <td>#</td>
+            <td>User</td>
+            <td>Book Buy</td>
+            <td>Book Sell</td>
+            <td>Payment Status</td>
+            <td>Agent</td>
+            <td>Swap Status</td>
+        </tr>
+        {% for i in swaping %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.fromuser_id.user_name}}</td>
+            <td>{{i.frombook_id.ubook_name}}</td>
+            <td>{{i.tobook_id.ubook_name}}</td>
+            <td>
+                {% if i.swap_paymentstatus == "1" %}
+                <span>Payed</span>
+                {% else %}
+                <span>Not Payed</span>
+                {% endif %}
+            </td>
+            <td>
+                {% if i.agent == "" %}
+                <span style="color: red;">N/A</span>
+                {% else %}
+                {{i.agent.agent_name}}
+                {% endif %}
+            </td>
+            <td>
+                {% if i.swap_status == "1" %}
+                <span>Assigned</span>
+                {% elif i.swap_status == "2" %}
+                <span>Collected</span>
+                {% elif i.swap_status == "3" %}
+                <span>Delivered</span>
+                {% elif i.swap_status == "4" %}
+                <span>Returned</span>
+                {% elif i.swap_status == "5" %}
+                <span>Return Delivered</span>
+                {% elif i.swap_status == "6" %}
+                <span>Completed</span>
+                {% else %}
+                <span>Not Assigned</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

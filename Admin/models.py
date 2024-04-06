@@ -38,3 +38,9 @@ class tbl_quality(models.Model):
     quality_level=models.CharField(max_length=15)
     quality_rule=models.CharField(max_length=50)
     quality_percentage=models.CharField(max_length=15)
+
+class tbl_admin(models.Model):
+    admin_name = models.CharField(max_length=30)
+    admin_contact = models.CharField(max_length=30)
+    admin_email = models.CharField(max_length=30)
+    admin_password = models.CharField(max_length=30)

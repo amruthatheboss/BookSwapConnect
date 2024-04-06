@@ -1,13 +1,20 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from Guest.models import *
+from User.models import *
 # Create your views here.
 
 def homepage(request):
-    return render(request,"Agent/HomePage.html")
+    if 'sid' in request.session:
+        return render(request,"Agent/HomePage.html")
+    else:
+        return redirect("Guest:Login")
 
 def my_pro(request):
-    data=tbl_agent.objects.get(id=request.session["sid"])
-    return render(request,"Agent/MyProfile.html",{'data':data})
+    if 'sid' in request.session:
+        data=tbl_agent.objects.get(id=request.session["sid"])
+        return render(request,"Agent/MyProfile.html",{'data':data})
+    else:
+        return redirect("Guest:Login")
 
 
 def editprofile(request):
@@ -36,3 +43,61 @@ def changepassword(request):
             return render(request,"Agent/ChangePassword.html",{'msg1':"Error in current password"})
     else:
         return render(request,"Agent/ChangePassword.html")
+
+def vieworders(request):
+    if 'sid' in request.session:
+        swap = tbl_swap.objects.all()
+        agentid = tbl_agent.objects.get(id=request.session["sid"])
+        return render(request,"Agent/ViewOrders.html",{"swaping":swap,"agent":agentid})
+    else:
+        return redirect("Guest:Login")
+
+
+def take_order(request,id):
+    if 'sid' in request.session:
+        swap = tbl_swap.objects.get(id=id)
+        swap.swap_status = 1
+        swap.agent = tbl_agent.objects.get(id=request.session["sid"])
+        swap.save()
+        return redirect("Agent:vieworders")
+    else:
+        return redirect("Guest:Login")
+
+
+def order_collected(request,id):
+    if 'sid' in request.session:
+        swap = tbl_swap.objects.get(id=id)
+        swap.swap_status = 2
+        swap.save()
+        return redirect("Agent:vieworders")
+    else:
+        return redirect("Guest:Login")
+
+
+def order_delivered(request,id):
+    if 'sid' in request.session:
+        swap = tbl_swap.objects.get(id=id)
+        swap.swap_status = 3
+        swap.save()
+        return redirect("Agent:vieworders")
+    else:
+        return redirect("Guest:Login")
+
+
+def order_returned(request,id):
+    if 'sid' in request.session:
+        swap = tbl_swap.objects.get(id=id)
+        swap.swap_status = 4
+        swap.save()
+        return redirect("Agent:vieworders")
+    else:
+        return redirect("Guest:Login")
+
+def returned_delivered(request,id):
+    if 'sid' in request.session:
+        swap = tbl_swap.objects.get(id=id)
+        swap.swap_status = 5
+        swap.save()
+        return redirect("Agent:vieworders")
+    else:
+        return redirect("Guest:Login")
