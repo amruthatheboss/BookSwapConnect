@@ -37,18 +37,20 @@
                 {% endif %}
             </td>
             <td>
-                {% if i.swap_status == "1" %}
+                {% if i.swap_status == 1 %}
                 <span>Assigned</span>
-                {% elif i.swap_status == "2" %}
+                {% elif i.swap_status == 2 %}
                 <span>Collected</span>
-                {% elif i.swap_status == "3" %}
+                {% elif i.swap_status == 3 %}
                 <span>Delivered</span>
-                {% elif i.swap_status == "4" %}
+                {% elif i.swap_status == 4 %}
                 <span>Returned</span>
-                {% elif i.swap_status == "5" %}
+                {% elif i.swap_status == 5 %}
                 <span>Return Delivered</span>
-                {% elif i.swap_status == "6" %}
-                <span>Completed</span>
+                {% elif i.swap_status == 6 %}
+                <span>Completed</span> | <a href="{% url 'User:userrating' i.id %}">Rate</a>
+                {% elif i.swap_status == 0 and i.swap_paymentstatus == 0 %}
+                <a href="">Payment</a>
                 {% else %}
                 <span>Not Assigned</span>
                 {% endif %}

@@ -48,7 +48,7 @@ def changepassword(request):
 def PublisherAddBook(request):   
     if 'pid' in request.session:                                       
         pbookdata=tbl_genre.objects.all()
-        pbook = tbl_paddbook.objects.all()
+        pbook = tbl_paddbook.objects.filter(publisher=request.session['pid'])
         if request.method =='POST':
             pgen=tbl_genre.objects.get(id=request.POST.get('selgenre'))
             pname = request.POST.get('txtname')
@@ -68,6 +68,7 @@ def PublisherAddBook(request):
                 pbook_authname=pauthname,
                 pbook_genre=pgen,
                 pbook_qty=pqty,
+                publisher=tbl_publisher.objects.get(id=request.session['pid'])
             )
             return redirect('Publisher:PublisherAddBook')
         return render(request, 'Publisher/PublisherAddBook.html',{'genre':pbookdata,'data':pbook})
@@ -129,3 +130,5 @@ def Viewpublishercomplaints(request):
 def logout(request):
     del request.session['pid']
     return redirect("Guest:Login")
+
+

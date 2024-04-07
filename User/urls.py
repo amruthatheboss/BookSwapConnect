@@ -31,6 +31,34 @@ urlpatterns = [
 
      path('usercomplaint/',views.usercomplaint,name="usercomplaint"),
 
-     path('Viewcomplaints/',views.Viewcomplaints,name="Viewcomplaints")
+     path('Viewcomplaints/',views.Viewcomplaints,name="Viewcomplaints"),
+
+     path('Searchpbook/',views.searchpbook,name="searchpbook"),
+
+    path('Ajaxpsearch/',views.ajaxpsearch,name="ajaxpsearch"),
+
+    path('ViewPmore/<int:bid>',views.ViewPmore,name="ViewPmore"),
+
+    path('Addcart/<int:pid>',views.Addcart,name="Addcart"),
+    path('Mycart/',views.Mycart,name="Mycart"),
+    path('DelCart/<int:did>',views.DelCart,name="DelCart"),
+    path('CartQty/',views.CartQty,name="CartQty"),
+
+    path('payment/',views.payment,name="payment"),
+    path('loader/',views.loader,name="loader"),
+    path('paymentsuc/',views.paymentsuc,name="paymentsuc"),
+
+    path('mypdtbooking/',views.mypdtbooking,name="mypdtbooking"),
+    path('mypublisherbook/<int:id>',views.mypublisherbook,name="mypublisherbook"),
+
+    path('rating/<int:mid>',views.rating,name="rating"),  
+    path('ajaxstar/',views.ajaxstar,name="ajaxstar"),
+
+    path('userrating/<int:mid>',views.userrating,name="userrating"),  
+    path('userajaxstar/',views.userajaxstar,name="userajaxstar"),
+
+    path('viewuser/<int:id>',views.viewuser,name="viewuser"),
+    
+
 
 ]

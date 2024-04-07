@@ -1,0 +1,33 @@
+{% load mathfilters %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <table border="1">
+        <tr>
+            <td>SerialNo</td>
+            <td>Photo</td>
+            <td>Name</td>
+            <td>Quantity</td>
+            <td>Price</td>
+            <td>Total</td>
+            <td>Action</td>
+        </tr>
+        {% for i in cart %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td><img src="{{i.product.pbook_photo.url}}" width="150" height="150" alt=""></td>
+            <td>{{i.product.pbook_name}}</td>
+            <td>{{i.cart_qty}}</td>
+            <td>{{i.product.pbook_price}}</td>
+            <td>{{i.cart_qty|mul:i.product.pbook_price}}</td>
+            <td><a href="{% url 'User:rating' i.id %}">Rate</a></td>
+        </tr>
+        {% endfor %}
+</table>
+</body>
+</html>

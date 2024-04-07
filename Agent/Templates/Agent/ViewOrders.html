@@ -30,17 +30,17 @@
             </td>
             {% if i.agent == agent %}
             <td>
-                {% if i.swap_status == "1" %}
+                {% if i.swap_status == 1 %}
                 <span>Assigned</span> | <a href="{% url 'Agent:order_collected' i.id %}">Collect</a>
-                {% elif i.swap_status == "2" %}
+                {% elif i.swap_status == 2 %}
                 <span>Collected</span> | <a href="{% url 'Agent:order_delivered' i.id %}">Delivered</a>
-                {% elif i.swap_status == "3" %}
+                {% elif i.swap_status == 3 %}
                 <span>Delivered</span> | <a href="{% url 'Agent:order_returned' i.id %}">Returned</a>
-                {% elif i.swap_status == "4" %}
+                {% elif i.swap_status == 4 %}
                 <span>Returned</span> | <a href="{% url 'Agent:returned_delivered' i.id %}">Return Delivered</a>
-                {% elif i.swap_status == "5" %}
+                {% elif i.swap_status == 5 %}
                 <span>Return Delivered</span>
-                {% elif i.swap_status == "6" %}
+                {% elif i.swap_status == 6 %}
                 <span>Completed</span>
                 {% else %}
                 <a href="{% url 'Agent:take_order' i.id %}">Take the order</a>

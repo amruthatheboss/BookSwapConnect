@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <table border="1" cellpadding="10">
+        <tr>
+            <td>SerialNo</td>
+            <td>Date</td>
+            <td>Amount</td>
+            <td>Action</td>
+        </tr>
+        {% for i in booking %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.booking_date}}</td>
+            <td>{{i.booking_amount}}</td>
+            <td><a href="{% url 'User:mypublisherbook' i.id %}">View Book</a></td>
+        </tr>
+        {% endfor %}
+</table>
+</body>
+</html>

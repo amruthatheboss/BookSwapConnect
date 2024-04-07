@@ -3,6 +3,7 @@ from Guest.models import *
 from User.models import *
 from Admin.models import *
 from Publisher.models import *
+from django.http import JsonResponse
 # Create your views here.
 
 def homepage(request):
@@ -51,7 +52,7 @@ def UserAddBook(request):
     if 'uid' in request.session:                                     
         ubookdata=tbl_genre.objects.all()
         qualitydata=tbl_quality.objects.all()
-        ubook = tbl_uaddbook.objects.filter(user=request.session['uid'])
+        ubook = tbl_uaddbook.objects.filter(user=request.session['uid'],ubook_status=0)
 
         if request.method =='POST':
             user = tbl_user.objects.get(id=request.session['uid'])
@@ -215,7 +216,8 @@ def payment(request,amt,sid):
 
 def mybooking(request):
     if 'uid' in request.session:              
-        swap = tbl_swap.objects.filter(touser_id=request.session["uid"],swap_paymentstatus=1)
+        
+        swap = tbl_swap.objects.filter(touser_id=request.session["uid"],swap_paymentstatus__lte=1)
         return render(request,"User/Mybooking.html",{"swaping":swap})
     else:
         return redirect("Guest:Login")
@@ -255,3 +257,235 @@ def Viewcomplaints(request):
         return render(request,"User/Mycomplaint.html",{'complaint':complaint})
     else:
         return redirect("Guest:Login")
+    
+
+def searchpbook(request):
+    if 'uid' in request.session:    
+        ar=[1,2,3,4,5]
+        parry=[]
+        avg=0          
+        pbook = tbl_paddbook.objects.all()
+        # print(ubook.query)
+        for i in pbook:
+            wdata=tbl_paddbook.objects.get(id=i.id)
+            tot=0
+            ratecount=tbl_rating.objects.filter(book=wdata).count()
+            if ratecount>0:
+                ratedata=tbl_rating.objects.filter(book=wdata)
+                for j in ratedata:
+                    tot=tot+j.rating_data
+                    avg=tot//ratecount
+                    #print(avg)
+                parry.append(avg)
+            else:
+                parry.append(0)
+            # print(parry)
+        datas=zip(pbook,parry)
+        return render(request,"User/searchp.html",{'data':datas,"ar":ar})
+    else:
+        return redirect("Guest:Login")
+
+def ajaxpsearch(request):
+    ar=[1,2,3,4,5]
+    parry=[]
+    avg=0 
+    pbook = tbl_paddbook.objects.filter(pbook_name__istartswith=request.GET.get("bookName"))
+    for i in pbook:
+        wdata=tbl_paddbook.objects.get(id=i.id)
+        tot=0
+        ratecount=tbl_rating.objects.filter(book=wdata).count()
+        if ratecount>0:
+            ratedata=tbl_rating.objects.filter(book=wdata)
+            for j in ratedata:
+                tot=tot+j.rating_data
+                avg=tot//ratecount
+                #print(avg)
+            parry.append(avg)
+        else:
+            parry.append(0)
+        # print(parry)
+    datas=zip(pbook,parry)
+    return render(request,"User/ajaxpsearch.html",{'data':datas,"ar":ar})
+
+def ViewPmore(request,bid):
+    if 'uid' in request.session:              
+        ViewBook=tbl_paddbook.objects.get(id=bid)
+        return render(request,"User/ViewPmore.html",{'ViewBook':ViewBook})
+    else:
+        return redirect("Guest:Login")
+
+def Addcart(request,pid):
+    if 'uid' in request.session:  
+        productdata=tbl_paddbook.objects.get(id=pid)
+        custdata=tbl_user.objects.get(id=request.session["uid"])
+        bookingcount=tbl_booking.objects.filter(user=custdata,booking_status=0).count()
+        if bookingcount>0:
+            bookingdata=tbl_booking.objects.get(user=custdata,booking_status=0)
+            cartcount=tbl_cart.objects.filter(booking=bookingdata,product=productdata).count()
+            if cartcount>0:
+                msg="Already added"
+                return render(request,"User/searchp.html",{'msg':msg})
+            else:
+                tbl_cart.objects.create(booking=bookingdata,product=productdata,cart_qty=1)
+                return redirect("User:searchpbook")
+        else:
+            tbl_booking.objects.create(user=custdata)
+            bookingcount=tbl_booking.objects.filter(booking_status=0,user=custdata).count()
+            if bookingcount>0:
+                bookingdata=tbl_booking.objects.get(user=custdata,booking_status=0)
+                cartcount=tbl_cart.objects.filter(booking=bookingdata,product=productdata).count()
+                if cartcount>0:
+                    msg="Already added"
+                    return render(request,"User/searchp.html",{'msg':msg})
+                else:
+                    tbl_cart.objects.create(booking=bookingdata,product=productdata,cart_qty=1)
+                    return redirect("User:searchpbook")
+    else:
+        return redirect("Guest:Login")
+    
+def Mycart(request):
+   if request.method=="POST":
+    bookingdata=tbl_booking.objects.get(id=request.session["bookingid"])
+    bookingdata.booking_amount=request.POST.get("carttotalamt")
+    bookingdata.booking_status=1
+    bookingdata.save()
+    return redirect("User:payment")
+   else:
+    customerdata=tbl_user.objects.get(id=request.session["uid"])
+    bcount=tbl_booking.objects.filter(user=customerdata,booking_status=0).count()
+    #cartcount=cart.objects.filter(booking__customer=customerdata,booking__status=0).count()
+    if bcount>0:
+        #cartdata=cart.objects.filter(booking__customer=customerdata,booking__status=0)
+        book=tbl_booking.objects.get(user=customerdata,booking_status=0)
+        bid=book.id
+        request.session["bookingid"]=bid
+        bkid=tbl_booking.objects.get(id=bid)
+        cartdata=tbl_cart.objects.filter(booking=bkid)
+        return render(request,"User/MyCart.html",{'data':cartdata})
+    else:
+        return render(request,"User/MyCart.html")
+
+def DelCart(request,did):
+    tbl_cart.objects.get(id=did).delete()
+    return redirect("User:Mycart")
+
+def CartQty(request):
+    qty=request.GET.get('QTY')
+    cartid=request.GET.get('ALT')
+    cartdata=tbl_cart.objects.get(id=cartid)
+    cartdata.cart_qty=qty
+    cartdata.save()
+    return redirect("User:Mycart")
+
+def payment(request):
+    bk = tbl_booking.objects.get(id=request.session["bookingid"])
+    if request.method == "POST":
+        cart = tbl_cart.objects.filter(booking=request.session["bookingid"])
+        bk.booking_status = 2
+        bk.save()
+        for i in cart:
+            pdt = tbl_paddbook.objects.get(id=i.product_id )
+            stock = pdt.pbook_qty
+            qty = i.cart_qty
+            bal = int(stock) - int(qty)
+            pdt.pbook_qty = bal
+            pdt.save()
+        return redirect("User:loader")
+    else:
+        return render(request,"User/Payment.html",{"amts":bk})
+
+def loader(request):
+    return render(request,"User/Loader.html")
+
+def paymentsuc(request):
+    return render(request,"User/Payment_suc.html")
+
+def mypdtbooking(request):
+    bk = tbl_booking.objects.filter(user=request.session["uid"],booking_status=2)
+    return render(request,"User/My_Booking.html",{"booking":bk})
+
+def mypublisherbook(request,id):
+    cart = tbl_cart.objects.filter(booking=id)
+    return render(request,"User/My_Publisher_Book.html",{"cart":cart})
+
+def rating(request,mid):
+    parray=[1,2,3,4,5]
+    mid=mid
+    cart = tbl_cart.objects.get(id=mid)
+    wdata=tbl_paddbook.objects.get(id=cart.product_id)
+    
+    counts=0
+    counts=stardata=tbl_rating.objects.filter(book=cart.product_id).count()
+    # print(cart.product_id)
+    if counts>0:
+        res=0
+        stardata=tbl_rating.objects.filter(book=wdata).order_by('-datetime')
+        for i in stardata:
+            res=res+i.rating_data
+        avg=res//counts
+        return render(request,"User/Rating.html",{'mid':mid,'data':stardata,'ar':parray,'avg':avg,'count':counts})
+    else:
+         return render(request,"User/Rating.html",{'mid':mid})
+
+def ajaxstar(request):
+    parray=[1,2,3,4,5]
+    rating_data=request.GET.get('rating_data')
+    user_name=request.GET.get('user_name')
+    user_review=request.GET.get('user_review')
+    workid=request.GET.get('workid')
+    cart=tbl_cart.objects.get(id=workid)
+    wdata=tbl_paddbook.objects.get(id=cart.product_id)
+    tbl_rating.objects.create(user_name=user_name,user_review=user_review,rating_data=rating_data,book=wdata)
+    stardata=tbl_rating.objects.filter(book=wdata).order_by('-datetime')
+    return render(request,"User/AjaxRating.html",{'data':stardata,'ar':parray})
+
+def userrating(request,mid):
+    parray=[1,2,3,4,5]
+    mid=mid
+    cart = tbl_swap.objects.get(id=mid)
+    wdata=tbl_user.objects.get(id=cart.fromuser_id_id)
+    
+    counts=0
+    counts=stardata=tbl_rating.objects.filter(user=cart.fromuser_id_id).count()
+    # print(cart.product_id)
+    if counts>0:
+        res=0
+        stardata=tbl_rating.objects.filter(user=wdata).order_by('-datetime')
+        for i in stardata:
+            res=res+i.rating_data
+        avg=res//counts
+        return render(request,"User/UserRating.html",{'mid':mid,'data':stardata,'ar':parray,'avg':avg,'count':counts})
+    else:
+         return render(request,"User/UserRating.html",{'mid':mid})
+    
+def userajaxstar(request):
+    parray=[1,2,3,4,5]
+    rating_data=request.GET.get('rating_data')
+    user_name=request.GET.get('user_name')
+    user_review=request.GET.get('user_review')
+    workid=request.GET.get('workid')
+    cart=tbl_swap.objects.get(id=workid)
+    wdata=tbl_user.objects.get(id=cart.fromuser_id_id)
+    tbl_rating.objects.create(user_name=user_name,user_review=user_review,rating_data=rating_data,user=wdata)
+    stardata=tbl_rating.objects.filter(user=wdata).order_by('-datetime')
+    return render(request,"User/AjaxRating.html",{'data':stardata,'ar':parray})
+
+def viewuser(request,id):
+    ar=[1,2,3,4,5]
+    parry=[]
+    avg=0 
+    ubook = tbl_uaddbook.objects.get(id=id)
+    user = tbl_user.objects.get(id=ubook.user_id)
+    tot=0
+    ratecount=tbl_rating.objects.filter(user=user).count()
+    if ratecount>0:
+        ratedata=tbl_rating.objects.filter(user=user)
+        for j in ratedata:
+            tot=tot+j.rating_data
+            avg=tot//ratecount
+            #print(avg)
+        parry.append(avg)
+    else:
+        parry.append(0)
+    # print(parry)
+    return render(request,"User/ViewUser.html",{"user":user,"parry":parry,"ar":ar})

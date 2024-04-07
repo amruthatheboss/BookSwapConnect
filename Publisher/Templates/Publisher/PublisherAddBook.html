@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -71,7 +71,12 @@
             <td><img src="{{i.pbook_photo.url}}" width="150" height="150" alt=""></td>
             <td>{{i.pbook_authname}}</td>
             <td>{{i.pbook_genre.gen_name}}</td>
-            <td>{{i.pbook_qty}}</td>         
+            <td>
+                {% if i.pbook_qty == "0" %}
+                <span style="color: red;">Out Of Stock</span>
+                {% else %}
+                {{i.pbook_qty}}</td>         
+                {% endif %}
             <td><a href="{% url 'Publisher:PublisherBookDel' i.id %}">Delete</a>
              <a href="{% url 'Publisher:PublisherBookUpdate' i.id %}">Edit</a></td>
         </tr>

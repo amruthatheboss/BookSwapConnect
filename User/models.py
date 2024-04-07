@@ -14,7 +14,6 @@ class tbl_uaddbook(models.Model):
     ubook_genre=models.ForeignKey(tbl_genre, on_delete=models.CASCADE)
     ubook_qlty=models.ForeignKey(tbl_quality, on_delete=models.CASCADE)
     user=models.ForeignKey(tbl_user, on_delete=models.CASCADE)
-    user=models.ForeignKey(tbl_user, on_delete=models.CASCADE)
     ubook_status = models.IntegerField(default="0")
 
     
@@ -26,14 +25,14 @@ class tbl_swap(models.Model):
     frombook_id=models.ForeignKey(tbl_uaddbook, on_delete=models.SET_NULL,related_name="frombook_id",null=True)
     swap_status=models.IntegerField(default=0)
     swap_price=models.CharField(max_length=15)
-    swap_paymentstatus=models.CharField(max_length=15)
+    swap_paymentstatus=models.IntegerField(default=0)
     agent = models.ForeignKey(tbl_agent,on_delete=models.CASCADE,null=True)
 
 class tbl_booking(models.Model):
     booking_status = models.IntegerField(default=0)
     booking_date = models.DateField(auto_now_add=True)
     user = models.ForeignKey(tbl_user,on_delete=models.CASCADE)
-    booking_amount = models.IntegerField(default=0)
+    booking_amount = models.CharField(max_length=30)
 
 class tbl_cart(models.Model):
     cart_qty = models.IntegerField(default=1)
@@ -52,3 +51,10 @@ class tbl_complaint(models.Model):
     publisher_id=models.ForeignKey(tbl_publisher, on_delete=models.CASCADE,related_name="publisher_id",null=True)
     agent_id=models.ForeignKey(tbl_agent, on_delete=models.CASCADE,related_name="agent_id",null=True)
 
+class tbl_rating(models.Model):
+    rating_data=models.IntegerField()
+    user_name=models.CharField(max_length=500)
+    user_review=models.CharField(max_length=500)
+    book=models.ForeignKey(tbl_paddbook,on_delete=models.SET_NULL,null=True)
+    user=models.ForeignKey(tbl_user,on_delete=models.SET_NULL,null=True)
+    datetime=models.DateTimeField(auto_now_add=True)
