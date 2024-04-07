@@ -46,7 +46,7 @@ def changepassword(request):
 
 def vieworders(request):
     if 'sid' in request.session:
-        swap = tbl_swap.objects.all()
+        swap = tbl_swap.objects.filter(swap_paymentstatus__gte=1)
         agentid = tbl_agent.objects.get(id=request.session["sid"])
         return render(request,"Agent/ViewOrders.html",{"swaping":swap,"agent":agentid})
     else:

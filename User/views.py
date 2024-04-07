@@ -196,6 +196,7 @@ def Acceptbook(request,bid,sid):
             diff = float(tobook.ubook_price) - float(frombook.ubook_price)
             sdata = tbl_swap.objects.get(id=sid)
             sdata.swap_price = int(diff)
+            sdata.swap_paymentstatus = -1
             sdata.save()
             return redirect('User:Viewrequest')
     else:
@@ -216,9 +217,10 @@ def payment(request,amt,sid):
 
 def mybooking(request):
     if 'uid' in request.session:              
-        
+        user = tbl_user.objects.get(id=request.session["uid"])
         swap = tbl_swap.objects.filter(touser_id=request.session["uid"],swap_paymentstatus__lte=1)
-        return render(request,"User/Mybooking.html",{"swaping":swap})
+        swapfrom = tbl_swap.objects.filter(fromuser_id=request.session["uid"],swap_paymentstatus__lte=1)
+        return render(request,"User/Mybooking.html",{"swaping":swap,"user":user,"fromuser":swapfrom})
     else:
         return redirect("Guest:Login")
 
@@ -349,7 +351,7 @@ def Mycart(request):
     bookingdata.booking_amount=request.POST.get("carttotalamt")
     bookingdata.booking_status=1
     bookingdata.save()
-    return redirect("User:payment")
+    return redirect("User:cartpayment")
    else:
     customerdata=tbl_user.objects.get(id=request.session["uid"])
     bcount=tbl_booking.objects.filter(user=customerdata,booking_status=0).count()
@@ -377,7 +379,7 @@ def CartQty(request):
     cartdata.save()
     return redirect("User:Mycart")
 
-def payment(request):
+def cartpayment(request):
     bk = tbl_booking.objects.get(id=request.session["bookingid"])
     if request.method == "POST":
         cart = tbl_cart.objects.filter(booking=request.session["bookingid"])

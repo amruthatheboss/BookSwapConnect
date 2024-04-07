@@ -44,7 +44,7 @@ urlpatterns = [
     path('DelCart/<int:did>',views.DelCart,name="DelCart"),
     path('CartQty/',views.CartQty,name="CartQty"),
 
-    path('payment/',views.payment,name="payment"),
+    path('cartpayment/',views.cartpayment,name="cartpayment"),
     path('loader/',views.loader,name="loader"),
     path('paymentsuc/',views.paymentsuc,name="paymentsuc"),
 
