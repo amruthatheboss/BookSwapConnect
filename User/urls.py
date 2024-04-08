@@ -59,6 +59,14 @@ urlpatterns = [
 
     path('viewuser/<int:id>',views.viewuser,name="viewuser"),
     
+    
+    
+    path('MyGenre/',views.MyGenre,name="MyGenre"),
+
+
+    path('GenreDel/<int:id>',views.GenreDel,name="GenreDel"),
+   
+    path('MyWishList/<int:id>',views.MyWishList,name="MyWishList"),
 
 
 ]

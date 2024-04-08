@@ -58,3 +58,12 @@ class tbl_rating(models.Model):
     book=models.ForeignKey(tbl_paddbook,on_delete=models.SET_NULL,null=True)
     user=models.ForeignKey(tbl_user,on_delete=models.SET_NULL,null=True)
     datetime=models.DateTimeField(auto_now_add=True)
+
+
+class tbl_usergenre(models.Model):
+    genre=models.ForeignKey(tbl_genre,on_delete=models.SET_NULL,null=True)
+    user=models.ForeignKey(tbl_user,on_delete=models.SET_NULL,null=True)
+
+class tbl_wishlist(models.Model):
+    book=models.ForeignKey(tbl_paddbook,on_delete=models.SET_NULL,null=True)
+    user=models.ForeignKey(tbl_user,on_delete=models.SET_NULL,null=True)

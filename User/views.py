@@ -8,7 +8,13 @@ from django.http import JsonResponse
 
 def homepage(request):
     if 'uid' in request.session:
-        return render(request,"User/HomePage.html")
+        uid = request.session['uid']
+        user = tbl_user.objects.get(id=uid)
+        # ubook = tbl_uaddbook.objects.filter(ubook_status=0).exclude(user=user)
+        user_genre = tbl_usergenre.objects.filter(user=user).values_list('genre', flat=True) 
+        ubook = tbl_uaddbook.objects.filter(ubook_status=0, ubook_genre__in=user_genre).exclude(user_id=user)
+       
+        return render(request,"User/HomePage.html",{'ubook':ubook})
     else:
         return redirect("Guest:Login")
 
@@ -491,3 +497,40 @@ def viewuser(request,id):
         parry.append(0)
     # print(parry)
     return render(request,"User/ViewUser.html",{"user":user,"parry":parry,"ar":ar})
+
+
+
+
+def MyGenre(request):
+    myGenre=tbl_usergenre.objects.all()
+    Genredata=tbl_genre.objects.all()
+    if request.method =='POST':
+        user = tbl_user.objects.get(id=request.session['uid'])
+        ugen=tbl_genre.objects.get(id=request.POST.get('selgenre'))
+        tbl_usergenre.objects.create(
+            genre=ugen,
+            user=user,
+        )
+        return redirect('User:MyGenre')
+    else:
+        return render(request,"User/MyGenre.html",{'myGenre':myGenre,'Genredata':Genredata}) 
+
+
+def MyWishList(request,id):
+    user = tbl_user.objects.get(id=request.session['uid'])
+    checkBook=tbl_wishlist.objects.filter(user=user,book=id)
+    msg = ''
+    if checkBook:
+        return render(request,"User/searchp.html",{"msg":"Already Added"})
+    else:
+         ubook=tbl_paddbook.objects.get(id=id)
+         tbl_wishlist.objects.create(
+            book=ubook,
+            user=user,
+        )
+         return render(request,"User/searchp.html",{"msg":"Added to WishList"})
+   
+
+def GenreDel(request,id):
+    tbl_usergenre.objects.get(id=id).delete()
+    return redirect('User:MyGenre')

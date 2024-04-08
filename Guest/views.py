@@ -6,7 +6,8 @@ from Guest.models import *
 
 def Home(request):
     return render(request,"Guest/Home.html")
-    
+
+
 
 def userRegistration(request):
     district = tbl_district.objects.all()
