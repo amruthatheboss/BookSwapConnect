@@ -534,3 +534,8 @@ def MyWishList(request,id):
 def GenreDel(request,id):
     tbl_usergenre.objects.get(id=id).delete()
     return redirect('User:MyGenre')
+
+def ViewWishList(request):
+    user = tbl_user.objects.get(id=request.session['uid'])
+    data = tbl_wishlist.objects.filter(user=user)
+    return render(request,"User/ViewWishList.html",{"data":data})

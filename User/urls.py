@@ -68,5 +68,10 @@ urlpatterns = [
    
     path('MyWishList/<int:id>',views.MyWishList,name="MyWishList"),
 
+    path('ViewWishList/',views.ViewWishList,name="ViewWishList"),
+
+
+    
+
 
 ]
