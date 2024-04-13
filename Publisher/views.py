@@ -118,6 +118,8 @@ def publishercomplaint(request):
         return render(request, 'Publisher/Publishercomplaint.html',{"book":publisher_id})
     else:
         return redirect("Guest:Login")
+    
+
 
 def Viewpublishercomplaints(request):
     if 'pid' in request.session:      

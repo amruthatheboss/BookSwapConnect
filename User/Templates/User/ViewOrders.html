@@ -1,0 +1,44 @@
+{% extends 'Agent/Header.html' %}
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <table cellpadding="10">
+        <tr>
+            <td>#</td>
+            <td>Payment Status</td>
+            <td>Amount</td>
+            <td>Action</td>
+        </tr>
+        {% for i in BookingData %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>
+                {% if i.booking_status == 2 %}
+                <span>Payed</span>
+                {% elif i.booking_status == 3 %}
+                <span>Assigned</span>
+                {% elif i.booking_status == 4 %}
+                <span>Collected</span>
+                {% elif i.booking_status == 5 %}
+                <span>Delivered</span>
+                {% else %}
+                <span>Not Payed</span>
+                {% endif %}
+            </td>
+            <td>{{i.booking_amount}}</td>
+            <td><a href="{% url 'User:ViewUserBuyProduct' i.id %}">View Product</a></td>
+           
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
+{% endblock content %}

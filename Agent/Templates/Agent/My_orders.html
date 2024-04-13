@@ -1,0 +1,145 @@
+{% extends 'Agent/Header.html' %}
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h3>User To User Swap</h3>
+    <table cellpadding="10">
+        <tr>
+            <td>#</td>
+            <td>User</td>
+            <td>Book Buy</td>
+            <td>Book Sell</td>
+            <td>Payment Status</td>
+            <td>From Address</td>
+            <td>To Address</td>
+            <td>Swap Status</td>
+        </tr>
+        {% for i in swaping %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.fromuser_id.user_name}}</td>
+            <td>{{i.frombook_id.ubook_name}}</td>
+            <td>{{i.tobook_id.ubook_name}}</td>
+            <td>
+                {% if i.swap_paymentstatus == "1" %}
+                <span>Payed</span>
+                {% else %}
+                <span>Not Payed</span>
+                {% endif %}
+            </td>
+            <td>{{i.fromuser_id.user_address}}</td>
+            <td>{{i.touser_id.user_address}}</td>
+            {% if i.agent == agent %}
+            <td>
+                {% if i.swap_status == 1 %}
+                <span>Assigned</span> | <a href="{% url 'Agent:order_collected' i.id %}">Collect</a>
+                {% elif i.swap_status == 2 %}
+                <span>Collected</span> | <a href="{% url 'Agent:order_delivered' i.id %}">Delivered</a>
+                {% elif i.swap_status == 3 %}
+                <span>Delivered</span> | <a href="{% url 'Agent:order_returned' i.id %}">Returned</a>
+                {% elif i.swap_status == 4 %}
+                <span>Returned</span> | <a href="{% url 'Agent:returned_delivered' i.id %}">Return Delivered</a>
+                {% elif i.swap_status == 5 %}
+                <span>Return Delivered</span>
+                {% elif i.swap_status == 6 %}
+                <span>Completed</span>
+                {% else %}
+                <a href="{% url 'Agent:take_order' i.id %}">Take the order</a>
+                {% endif %}
+            </td>
+            {% else %}
+            <td>
+                {% if i.swap_status == "1" %}
+                <span>Assigned</span>
+                {% elif i.swap_status == "2" %}
+                <span>Collected</span>
+                {% elif i.swap_status == "3" %}
+                <span>Delivered</span>
+                {% elif i.swap_status == "4" %}
+                <span>Returned</span>
+                {% elif i.swap_status == "5" %}
+                <span>Return Delivered</span>
+                {% elif i.swap_status == "6" %}
+                <span>Completed</span>
+                {% else %}
+                <a href="{% url 'Agent:take_order' i.id %}">Take the order</a>
+                {% endif %}
+            </td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h3>User TO User</h3>
+    <table cellpadding="10">
+        <tr>
+            <td>#</td>
+            <td>Buy User</td>
+            <td>Address</td>
+            <td>Booking Amount </td>
+            <td>Booking Date</td>
+            <td>Action</td>
+        </tr>
+        {% for i in utou %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.user.user_name}}</td>
+            <td>{{i.user.user_address}}</td>
+            <td>{{i.booking_amount}}</td>
+            <td>{{i.booking_date}}</td>
+            <td>
+                {% if i.booking_status == 3 %}
+                <span>Assigned</span> | <a href="{% url 'Agent:viewproduct' i.id %}">View More</a> | <a href="{% url 'Agent:collect_utou_order' i.id %}">Collected</a>
+                {% elif i.booking_status == 4 %}
+                <span>Collected</span> | <a href="{% url 'Agent:viewproduct' i.id %}">View More</a> | <a href="{% url 'Agent:delivered_utou_order' i.id %}">Delivered</a>
+                {% elif i.booking_status == 5 %}
+                <span>Delivered</span> | <a href="{% url 'Agent:viewproduct' i.id %}">View More</a>
+                {% else %}
+                <a href="{% url 'Agent:viewproduct' i.id %}">View More</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h3>Publisher TO User</h3>
+    <table cellpadding="10">
+        <tr>
+            <td>#</td>
+            <td>Buy User</td>
+            <td>Address</td>
+            <td>Booking Amount </td>
+            <td>Booking Date</td>
+            <td>Action</td>
+        </tr>
+        {% for i in ptou %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.user.user_name}}</td>
+            <td>{{i.user.user_address}}</td>
+            <td>{{i.booking_amount}}</td>
+            <td>{{i.booking_date}}</td>
+            <td>
+                {% if i.booking_status == 3 %}
+                <span>Assigned</span> | <a href="{% url 'Agent:viewproduct' i.id %}">View More</a> | <a href="{% url 'Agent:collect_ptou_order' i.id %}">Collected</a>
+                {% elif i.booking_status == 4 %}
+                <span>Collected</span> | <a href="{% url 'Agent:viewproduct' i.id %}">View More</a> | <a href="{% url 'Agent:delivered_ptou_order' i.id %}">Delivered</a>
+                {% elif i.booking_status == 5 %}
+                <span>Delivered</span> | <a href="{% url 'Agent:viewproduct' i.id %}">View More</a>
+                {% else %}
+                <a href="{% url 'Agent:viewpublisherproduct' i.id %}">View More</a></td>
+                {% endif %}
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
+{% endblock content %}

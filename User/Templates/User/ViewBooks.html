@@ -10,33 +10,36 @@
     <title>Document</title>
 </head>
 <body>
-    <table border="1">
-        <tr>
-            <td>SerialNo</td>
-            <td>Name</td>
-            <td>Description</td>
-            <td>Price</td>
-            <td>Photo</td>
-            <td>Authorname</td>
-            <td>Genre</td>
-            <td>Quality</td>
-            <td>Action</td>
-        </tr>
-        {% for i in data %}
-        <tr>
-            <td>{{forloop.counter}}</td>
-            <td>{{i.ubook_name}}</td>
-            <td>{{i.ubook_desc}}</td>
-            <td>{{i.ubook_price}}</td>
-            <td><img src="{{i.ubook_photo.url}}" width="150" height="150" alt=""></td>
-            <td>{{i.ubook_authname}}</td>
-            <td>{{i.ubook_genre.gen_name}}</td>
-            <td>{{i.ubook_qlty.quality_level}}</td>         
-            <td><a href="{% url 'User:Acceptbook' i.id sid %}">Accept</a>
-            </td>
-        </tr>
-        {% endfor %}
-</table>
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>Serial No</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Photo</th>
+                <th>Author Name</th>
+                <th>Genre</th>
+                <th>Quality</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in data %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ i.ubook_name }}</td>
+                <td>{{ i.ubook_desc }}</td>
+                <td>{{ i.ubook_price }}</td>
+                <td><img src="{{ i.ubook_photo.url }}" width="150" height="150" alt=""></td>
+                <td>{{ i.ubook_authname }}</td>
+                <td>{{ i.ubook_genre.gen_name }}</td>
+                <td>{{ i.ubook_qlty.quality_level }}</td>         
+                <td><a href="{% url 'User:Acceptbook' i.id sid %}" class="btn btn-primary">Accept</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </body>
 </html>
 {% endblock content %}

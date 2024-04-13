@@ -1,47 +1,77 @@
-
 {% extends 'User/Header.html' %}
 {% load static %}
 {% block content %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
 </head>
+
 <body>
-    <input type="text" name="search" id="search" onkeyup="SearchKey(this.value)">
-  <div id="ajaxData">
 
-      {% for i in data %}
-      
-      <p>{{forloop.counter}}</p>
-      <p>{{i.ubook_name}}</p>
-      <p>{{i.ubook_price}}</p>
-      <p><img src="{{i.ubook_photo.url}}" width="150" height="150" alt=""></p>
-      <p><a href="{% url 'User:Viewmore' i.id %}">View More</a>
-      </p>
-      
-      {% endfor %}
-    </div>
+	<!-- single product slide -->
+	<div class="container">
+		<input type="text" class="form-control" name="search" placeholder="Search here...." id="search" onkeyup="SearchKey(this.value)">
 
-    
+		<div class="row" id="ajaxData">
+			<!-- single product -->
+			{% for i in data %}
+			<div class="col-lg-3 col-md-6 card m-3">
+				<div class="single-product">
+					<img class="img-fluid" src="{{i.ubook_photo.url}}" alt="" style="height: 300px;">
+					<div class="product-details">
+						<h6>{{i.ubook_name}}</h6>
+						<div class="price">
+							<h6>{{i.ubook_price}}</h6>
+							<h6 class="l-through">$210.00</h6>
+						</div>
+						<div class="prd-bottom">
+
+							<a href="{% url 'User:AddcartUser' i.id %}" class="social-info">
+								<span class="ti-bag"></span>
+								<p class="hover-text">add to Cart</p>
+							</a>
+							<a href="{% url 'User:Viewmore' i.id %}" class="social-info">
+								<span class="lnr lnr-move"></span>
+								<p class="hover-text">view more</p>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			{% endfor %}
+
+		</div>
+	</div>
+
+	{% if msg %}
+	<script>
+		alert("{{msg}}")
+		window.location = "{% url 'User:Search' %}"
+	</script>
+	{% endif %}
+
 </body>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 <script>
- function SearchKey (bookName) {
-        
-        var ur = "{% url 'User:Ajaxsearch' %}"
-        $.ajax({
-            url: ur,
-            data: {  bookName:bookName },
-            success: function (data) {
-                $("#ajaxData").html(data);
-            },
-        });
-    }
+	function SearchKey(bookName) {
+
+		var ur = "{% url 'User:Ajaxsearch' %}"
+		$.ajax({
+			url: ur,
+			data: { bookName: bookName },
+			success: function (data) {
+				$("#ajaxData").html(data);
+			},
+		});
+	}
 </script>
+
 </html>
 {% endblock content %}

@@ -1,4 +1,8 @@
-    <!DOCTYPE html>
+{% extends 'Publisher/Header.html' %}
+{% load static %}
+{% block content %}
+
+   <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -47,7 +51,7 @@
         <tr>
             <td colspan="2" align="center"><input type="submit" value="save">
             <input type="reset" value="cancel"></td>
-        </tr>\
+        </tr>
     </form>
     </table>
         <table border="1">
@@ -88,4 +92,4 @@
 </body>
 </html>
 
-
+{% endblock content %}

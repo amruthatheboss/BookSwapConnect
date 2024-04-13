@@ -218,7 +218,7 @@ def userListRejected(request):
     return render(request,"Admin/UserListRejected.html",{"userdata":userdata})
 
 def publisherListNew(request):
-    userdata = tbl_publisher.objects.all()
+    userdata = tbl_publisher.objects.filter(user_status=0)
     for i in userdata:
         print(i.publisher_name)
     return render(request,"Admin/PublisherListNew.html",{"userdata":userdata})

@@ -23,15 +23,16 @@ urlpatterns = [
     path('Viewbooks/<int:Fromid>/<int:sid>',views.Viewbooks,name="Viewbooks"),
 
     path('Acceptbook/<int:bid>/<int:sid>',views.Acceptbook,name="Acceptbook"),
+    path('Rejectedbook/<int:bid>/<int:rid>',views.Rejectedbook,name="Rejectedbook"),
 
     path('payment/<int:amt>/<int:sid>',views.payment,name="payment"),
 
     path('mybooking/',views.mybooking,name="mybooking"),
     path('view_publisher_book/',views.view_publisher_book,name="view_publisher_book"),
 
-     path('usercomplaint/',views.usercomplaint,name="usercomplaint"),
+    path('usercomplaint/',views.usercomplaint,name="usercomplaint"),
 
-     path('Viewcomplaints/',views.Viewcomplaints,name="Viewcomplaints"),
+    path('Viewcomplaints/',views.Viewcomplaints,name="Viewcomplaints"),
 
      path('Searchpbook/',views.searchpbook,name="searchpbook"),
 
@@ -40,6 +41,8 @@ urlpatterns = [
     path('ViewPmore/<int:bid>',views.ViewPmore,name="ViewPmore"),
 
     path('Addcart/<int:pid>',views.Addcart,name="Addcart"),
+    
+    
     path('Mycart/',views.Mycart,name="Mycart"),
     path('DelCart/<int:did>',views.DelCart,name="DelCart"),
     path('CartQty/',views.CartQty,name="CartQty"),
@@ -70,8 +73,37 @@ urlpatterns = [
 
     path('ViewWishList/',views.ViewWishList,name="ViewWishList"),
 
+    path('WishlistDel/<int:id>',views.WishlistDel,name="WishlistDel"),
+
+    #user Booking
 
     
+    path('AddcartUser/<int:pid>',views.AddcartUser,name="AddcartUser"),
+    
+    
+    path('MycartUser/',views.MycartUser,name="MycartUser"),
+    path('DelCartUser/<int:did>',views.DelCartUser,name="DelCartUser"),
+
+    path('cartpaymentUser/',views.cartpaymentUser,name="cartpaymentUser"),
+
+
+
+    path('vieworders/',views.vieworders,name="vieworders"),
+
+    path('chatpage/<int:id>',views.chatpage,name="chatpage"),
+    path('ajaxchat/',views.ajaxchat,name="ajaxchat"),
+    path('ajaxchatview/',views.ajaxchatview,name="ajaxchatview"),
+    path('clearchat/',views.clearchat,name="clearchat"),
+
+    path('ViewUserBuyProduct/<int:id>',views.ViewUserBuyProduct,name="ViewUserBuyProduct"),
+
+    path('swappayment/<int:id>',views.swappayment,name="swappayment"),
+
+
+
+
+
+    path('logout/',views.logout,name="logout"),
 
 
 ]

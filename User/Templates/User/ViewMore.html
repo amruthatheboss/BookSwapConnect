@@ -12,21 +12,81 @@
 </head>
 
 <body>
-   
-      
-            <p>{{ViewBook.ubook_name}}</p>
-            <p>{{ViewBook.ubook_desc}}</p>
-            <p>{{ViewBook.ubook_price}}</p>
-            <p><img src="{{ViewBook.ubook_photo.url}}" width="150" height="150" alt=""></p>
-            <p>{{ViewBook.ubook_authname}}</p>
-            <p>{{ViewBook.ubook_genre.gen_name}}</p>
-            <p>{{ViewBook.ubook_qlty.quality_level}}</p>
 
-            <a href="{% url 'User:Swaprequest' ViewBook.id %}">Swap</a>
-             <a href="{% url 'User:UserBookUpdate' ViewBook.id %}">Buy now</a>
-             <a href="{% url 'User:viewuser' ViewBook.id %}">view user</a>
-            
-       
+
+
+
+
+    <div class="container">
+
+        <div class="row" id="ajaxData">
+            <!-- single product -->
+            <div class="col-lg-12 col-md-6 card m-3" style="background-color: #e1f5fe;">
+                <div class="single-product">
+                    <img class="img-fluid" src="{{ViewBook.ubook_photo.url}}" alt=""
+                        style="height: 350px; object-fit: contain;">
+                    <div class="product-details" align="center">
+                        <h2>{{ViewBook.ubook_name}}</h2>
+                        <div class="d-flex justify-content-center w-100">
+                            <div style="width: 200px;margin-left: 130px;" class="d-flex flex-column align-items-start">
+                                <div class="price">
+                                    <h6>Price </h6>
+                                </div>
+                                <div class="price">
+                                    <h5>Description </h5>
+                                </div>
+                                <div class="price">
+                                    <h5>Author </h5>
+                                </div>
+                                <div class="price">
+                                    <h5>Genre </h5>
+                                </div>
+                                <div class="price">
+                                    <h5>Quality </h5>
+                                </div>
+                            </div>
+                            <div style="width: 200px;" class="d-flex flex-column align-items-start">
+                                <div class="price">
+                                    <h6>{{ViewBook.ubook_price}}</h6>
+                                </div>
+                                <div class="price">
+                                    <h5>{{ViewBook.ubook_desc}}</h5>
+                                </div>
+                                <div class="price">
+                                    <h5> {{ViewBook.ubook_authname}}</h5>
+                                </div>
+                                <div class="price">
+                                    <h5> {{ViewBook.ubook_genre.gen_name}}</h5>
+                                </div>
+                                <div class="price">
+                                    <h5> {{ViewBook.ubook_qlty.quality_level}}</h5>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="prd-bottom">
+
+                            <a href="{% url 'User:AddcartUser' ViewBook.id %}" class="btn">
+                                Add to Cart
+                            </a>
+                            <a href="{% url 'User:Swaprequest' ViewBook.id %}" class="btn">
+
+                                Swap
+                            </a>
+                            <a href="{% url 'User:viewuser' ViewBook.id %}" class="btn">
+
+                                View User
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+
 </body>
 
 </html>

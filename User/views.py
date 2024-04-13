@@ -4,6 +4,8 @@ from User.models import *
 from Admin.models import *
 from Publisher.models import *
 from django.http import JsonResponse
+from datetime import datetime
+from django.db.models import Q
 # Create your views here.
 
 def homepage(request):
@@ -147,12 +149,16 @@ def Swaprequest(request,bid):
     if 'uid' in request.session:              
         uid = tbl_user.objects.get(id=request.session['uid'])
         bid=tbl_uaddbook.objects.get(id=bid)
+        
         toUser = bid.user
         tbl_swap.objects.create( 
                 touser_id=toUser,
                 tobook_id=bid,
                 fromuser_id=uid,
             )
+        bid.ubook_status = 1
+        bid.save()
+
         return redirect('User:Search')
     else:
         return redirect("Guest:Login")
@@ -162,7 +168,7 @@ def Swaprequest(request,bid):
 def Viewrequest(request):
     if 'uid' in request.session:              
         uid = tbl_user.objects.get(id=request.session['uid'])
-        ViewReq=tbl_swap.objects.filter(touser_id=uid,swap_paymentstatus=0)
+        ViewReq=tbl_swap.objects.filter(touser_id=uid,swap_paymentstatus=0,swap_status__lt=6)
         return render(request,"User/ViewRequest.html",{'ViewReq':ViewReq})
     else:
         return redirect("Guest:Login")
@@ -191,20 +197,48 @@ def Acceptbook(request,bid,sid):
         tobook.ubook_status = 1
         frombook.save()
         tobook.save()
-
+        frombookprice = int(frombook.ubook_price) + int(100)
+        tobookprice = int(tobook.ubook_price) + int(100)
         
-        if float(frombook.ubook_price) == float(tobook.ubook_price) :
-            return redirect('User:Viewrequest')
-        elif float(frombook.ubook_price) > float(tobook.ubook_price):
-            diff = float(frombook.ubook_price) - float(tobook.ubook_price)
-            return redirect('User:payment',int(diff),sid)
-        else:
-            diff = float(tobook.ubook_price) - float(frombook.ubook_price)
+        if float(frombookprice) == float(tobookprice) :
+            diffs = 100
             sdata = tbl_swap.objects.get(id=sid)
-            sdata.swap_price = int(diff)
-            sdata.swap_paymentstatus = -1
+            sdata.swap_price = 100
+            sdata.swap_paymentstatus = 0
             sdata.save()
-            return redirect('User:Viewrequest')
+            print(1)
+            return redirect('User:payment',int(diffs),sid)
+        elif float(frombookprice) > float(tobookprice):
+            diff = float(frombookprice) - float(tobookprice)
+            diffs = diff + 100
+            sdata = tbl_swap.objects.get(id=sid)
+            sdata.swap_price = 100
+            sdata.swap_paymentstatus = 0
+            sdata.save()
+            print(2)
+            return redirect('User:payment',int(diffs),sid)
+        else:
+            diff = float(tobookprice) - float(frombookprice)
+            sdata = tbl_swap.objects.get(id=sid)
+            sdata.swap_price = int(diff) + 100
+            sdata.swap_paymentstatus = 0
+            sdata.save()
+            print(3)
+            return redirect('User:payment',int(100),sid)
+    else:
+        return redirect("Guest:Login")
+
+
+def Rejectedbook(request,bid,rid):
+    if 'uid' in request.session:              
+        swapData = tbl_swap.objects.get(id=rid)
+        ubook = tbl_uaddbook.objects.get(id=bid)
+        swapData.swap_status = 6
+        swapData.save()
+        ubook.ubook_status = 0
+        ubook.save()
+        return redirect("User:Viewrequest")
+        
     else:
         return redirect("Guest:Login")
     
@@ -213,9 +247,9 @@ def payment(request,amt,sid):
         if request.method == "POST":
             sdata = tbl_swap.objects.get(id=sid)
             sdata.swap_paymentstatus = 1
-            sdata.swap_price = amt
+            # sdata.swap_price = amt
             sdata.save()
-            return redirect("User:homepage")
+            return redirect("User:loader")
         else:
             return render(request,"User/Payment.html",{"amt":amt})
     else:
@@ -224,9 +258,9 @@ def payment(request,amt,sid):
 def mybooking(request):
     if 'uid' in request.session:              
         user = tbl_user.objects.get(id=request.session["uid"])
-        swap = tbl_swap.objects.filter(touser_id=request.session["uid"],swap_paymentstatus__lte=1)
-        swapfrom = tbl_swap.objects.filter(fromuser_id=request.session["uid"],swap_paymentstatus__lte=1)
-        return render(request,"User/Mybooking.html",{"swaping":swap,"user":user,"fromuser":swapfrom})
+        swap = tbl_swap.objects.filter(touser_id=request.session["uid"],swap_paymentstatus__lte=2)
+        swapfrom = tbl_swap.objects.filter(fromuser_id=request.session["uid"],swap_paymentstatus__lte=2)
+        return render(request,"User/Mybooking.html",{"swaping":swapfrom,"user":user,"fromuser":swap})
     else:
         return redirect("Guest:Login")
 
@@ -409,7 +443,7 @@ def paymentsuc(request):
     return render(request,"User/Payment_suc.html")
 
 def mypdtbooking(request):
-    bk = tbl_booking.objects.filter(user=request.session["uid"],booking_status=2)
+    bk = tbl_booking.objects.filter(user=request.session["uid"],booking_status__gte=2)
     return render(request,"User/My_Booking.html",{"booking":bk})
 
 def mypublisherbook(request,id):
@@ -502,7 +536,8 @@ def viewuser(request,id):
 
 
 def MyGenre(request):
-    myGenre=tbl_usergenre.objects.all()
+    user = tbl_user.objects.get(id=request.session['uid'])
+    myGenre=tbl_usergenre.objects.filter(user=user)
     Genredata=tbl_genre.objects.all()
     if request.method =='POST':
         user = tbl_user.objects.get(id=request.session['uid'])
@@ -539,3 +574,129 @@ def ViewWishList(request):
     user = tbl_user.objects.get(id=request.session['uid'])
     data = tbl_wishlist.objects.filter(user=user)
     return render(request,"User/ViewWishList.html",{"data":data})
+
+def WishlistDel(request,id):
+    tbl_wishlist.objects.get(id=id).delete()
+    return redirect('User:ViewWishList')
+
+
+
+def AddcartUser(request,pid):
+    if 'uid' in request.session:  
+        productdata=tbl_uaddbook.objects.get(id=pid)
+        custdata=tbl_user.objects.get(id=request.session["uid"])
+        bookingcount=tbl_ubooking.objects.filter(user=custdata,booking_status=0).count()
+        if bookingcount>0:
+            bookingdata=tbl_ubooking.objects.get(user=custdata,booking_status=0)
+            cartcount=tbl_ucart.objects.filter(booking=bookingdata,product=productdata).count()
+            if cartcount>0:
+                msg="Already added"
+                return render(request,"User/Search.html",{'msg':msg})
+            else:
+                tbl_ucart.objects.create(booking=bookingdata,product=productdata,cart_qty=1)
+                return redirect("User:Search")
+        else:
+            tbl_ubooking.objects.create(user=custdata)
+            bookingcount=tbl_ubooking.objects.filter(booking_status=0,user=custdata).count()
+            if bookingcount>0:
+                bookingdata=tbl_ubooking.objects.get(user=custdata,booking_status=0)
+                cartcount=tbl_ucart.objects.filter(booking=bookingdata,product=productdata).count()
+                if cartcount>0:
+                    msg="Already added"
+                    return render(request,"User/Search.html",{'msg':msg})
+                else:
+                    tbl_ucart.objects.create(booking=bookingdata,product=productdata,cart_qty=1)
+                    return redirect("User:Search")
+    else:
+        return redirect("Guest:Login")
+    
+def MycartUser(request):
+   if request.method=="POST":
+    bookingdata=tbl_ubooking.objects.get(id=request.session["bookingid"])
+    bookingdata.booking_amount=request.POST.get("carttotalamt")
+    bookingdata.booking_status=1
+    bookingdata.save()
+    return redirect("User:cartpaymentUser")
+   else:
+    customerdata=tbl_user.objects.get(id=request.session["uid"])
+    bcount=tbl_ubooking.objects.filter(user=customerdata,booking_status=0).count()
+    #cartcount=cart.objects.filter(booking__customer=customerdata,booking__status=0).count()
+    if bcount>0:
+        #cartdata=cart.objects.filter(booking__customer=customerdata,booking__status=0)
+        book=tbl_ubooking.objects.get(user=customerdata,booking_status=0)
+        bid=book.id
+        request.session["bookingid"]=bid
+        bkid=tbl_ubooking.objects.get(id=bid)
+        cartdata=tbl_ucart.objects.filter(booking=bkid)
+        return render(request,"User/MycartUser.html",{'data':cartdata})
+    else:
+        return render(request,"User/MycartUser.html")
+
+def DelCartUser(request,did):
+    tbl_ucart.objects.get(id=did).delete()
+    return redirect("User:MycartUser")
+
+
+
+def cartpaymentUser(request):
+    bk = tbl_ubooking.objects.get(id=request.session["bookingid"])
+    if request.method == "POST":
+        cart = tbl_ucart.objects.filter(booking=request.session["bookingid"])
+        bk.booking_status = 2
+        bk.save()
+        for i in cart:
+            pdt = tbl_uaddbook.objects.get(id=i.product_id )
+            pdt.ubook_status = 1
+            pdt.save()
+       
+        return redirect("User:loader")
+    else:
+        return render(request,"User/Payment.html",{"amts":bk})
+
+
+
+def vieworders(request):
+    if 'uid' in request.session:
+        BookingData=tbl_ubooking.objects.filter(user=request.session["uid"])
+
+        return render(request,"User/ViewOrders.html",{"BookingData":BookingData})
+    else:
+        return redirect("Guest:Login")
+
+def chatpage(request,id):
+    user  = tbl_user.objects.get(id=id)
+    return render(request,"User/Chat.html",{"user":user})
+
+def ajaxchat(request):
+    from_user = tbl_user.objects.get(id=request.session["uid"])
+    to_user = tbl_user.objects.get(id=request.POST.get("tid"))
+    tbl_chat.objects.create(chat_content=request.POST.get("msg"),chat_time=datetime.now(),user_from=from_user,user_to=to_user,chat_file=request.FILES.get("file"))
+    return render(request,"User/Chat.html")
+
+def ajaxchatview(request):
+    tid = request.GET.get("tid")
+    user = tbl_user.objects.get(id=request.session["uid"])
+    chat_data = tbl_chat.objects.filter((Q(user_from=user) | Q(user_to=user)) & (Q(user_from=tid) | Q(user_to=tid))).order_by('chat_time')
+    return render(request,"User/ChatView.html",{"data":chat_data,"tid":int(tid)})
+
+def clearchat(request):
+    tbl_chat.objects.filter(Q(user_from=request.session["uid"]) & Q(user_to=request.GET.get("tid")) | (Q(user_from=request.GET.get("tid")) & Q(user_to=request.session["uid"]))).delete()
+    return render(request,"User/ClearChat.html",{"msg":"Chat Deleted Sucessfully...."})
+
+def ViewUserBuyProduct(request,id):
+    cartpdt = tbl_ucart.objects.filter(booking=id)
+    return render(request,"User/ViewUserBuyProduct.html",{"data":cartpdt})
+
+def swappayment(request,id):
+    swap = tbl_swap.objects.get(id=id)
+    amount = swap.swap_price
+    if request.method == "POST":
+        swap.swap_paymentstatus = 2
+        swap.save()
+        return redirect("User:loader")
+    else:
+        return render(request,"User/Payment.html",{"amt":amount})
+
+def logout(request):
+    del request.session['uid']
+    return redirect("Guest:Login")

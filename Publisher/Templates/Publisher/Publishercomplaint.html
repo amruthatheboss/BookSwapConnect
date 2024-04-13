@@ -1,3 +1,7 @@
+{% extends 'Publisher/Header.html' %}
+{% load static %}
+{% block content %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,23 +11,23 @@
 </head>
 <table>
 <body>
-    <form action="" method="post"   enctype="multipart/form-data">
-        {% csrf_token %}
-    <tr>
-        <td>Title</td>
-        <td><input type="text" name="txttitle" required ></td>
-    </tr>
-    <tr>
-        <td>Complaint</td>
-        <td>
-            <textarea name="txtcomp" rows="6" cols="20" required></textarea>
-        </td>
-    </tr>
-    <tr>
-        <td colspan="2" align="center"><input type="submit" value="Send">
-        <input type="reset" value="cancel"></td>
-    </tr>
-    </form>
+    <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="txttitle">Title</label>
+                <input type="text" name="txttitle" id="txttitle" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="txtcomp">Complaint</label>
+                <textarea name="txtcomp" id="txtcomp" rows="6" class="form-control" required></textarea>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary mr-2">Send</button>
+                <button type="reset" class="btn btn-secondary">Cancel</button>
+            </div>
+        </form>
+    
 </body>
 </table>
 </html>
+{% endblock content %}

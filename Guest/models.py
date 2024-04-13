@@ -15,6 +15,7 @@ class tbl_user(models.Model):
     user_photo = models.FileField(upload_to='Assets/UserPhoto/')
     user_proof = models.FileField(upload_to='Assets/UserProof/')
     user_status = models.IntegerField(default="0")
+    user_address = models.CharField(max_length=50,null=True)
 
 class tbl_publisher(models.Model):
     publisher_name=models.CharField(max_length=15)

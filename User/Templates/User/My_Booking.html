@@ -23,7 +23,17 @@
             <td>{{forloop.counter}}</td>
             <td>{{i.booking_date}}</td>
             <td>{{i.booking_amount}}</td>
-            <td><a href="{% url 'User:mypublisherbook' i.id %}">View Book</a></td>
+            <td>
+                {% if i.booking_status == 3 %}
+                <span>Assigned</span> | <a href="{% url 'User:mypublisherbook' i.id %}">View Book</a>
+                {% elif i.booking_status == 4 %}
+                <span>Collected</span> | <a href="{% url 'User:mypublisherbook' i.id %}">View Book</a>
+                {% elif i.booking_status == 5 %}
+                <span>Delivered</span> | <a href="{% url 'User:mypublisherbook' i.id %}">View Book</a>
+                {% else %}
+                <a href="{% url 'Agent:viewpublisherproduct' i.id %}">View More</a></td>
+                {% endif %}
+            </td>
         </tr>
         {% endfor %}
 </table>

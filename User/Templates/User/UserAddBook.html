@@ -10,86 +10,93 @@
     <title>Document</title>
 </head>
 <body>
-        
-    <form action="" method="post"   enctype="multipart/form-data">
-        {% csrf_token %}
-    <table>
-        <tr>
-            <td>Name</td>
-            <td><input type="text" name="txtname" id=""value="{{editdata.ubook_name}}"></td>
-        </tr>
-        <tr>
-            <td>Description</td>
-            <td>
-                <textarea name="txtdesc" rows="6" cols="20" id="" value="">{{editdata.ubook_desc}}</textarea>
-            </td>
-        </tr>
-        <tr>
-            <td>Price</td>
-            <td><input type="text" name="txtprice" id=""value="{{editdata.ubook_price}}"></td>
-        </tr>
-        <tr>
-            <td>Photo</td>
-            <td><input type="file" name="photo"  required ></td>
-        </tr>
-        <tr>
-            <td>AuthorName</td>
-            <td><input type="text" name="txtaname" id=""value="{{editdata.ubook_authname}}"></td>
-        </tr>
-        <tr>
-            <td>Genre</td>
-            <td><select name="selgenre" id="">
-                <option value="">---select---</option>
-                {% for i in genre %}
-                <option value="{{i.id}}">{{i.gen_name}}</option>
-                {% endfor %}
-            </select></td>
-        </tr>
-        <tr>
-            <td>Quality</td>
-            <td><select name="selquality" id="">
-                <option value="">---select---</option>
-                {% for i in quality %}
-                <option value="{{i.id}}">{{i.quality_level}}</option>
-                {% endfor %}
-            </select></td>
-        </tr>
-        <tr>
-            <td colspan="2" align="center"><input type="submit" value="save">
-            <input type="reset" value="cancel"></td>
-        </tr>
-    </form>
-    </table>
-        <table border="1">
-        <tr>
-            <td>SerialNo</td>
-            <td>Name</td>
-            <td>Description</td>
-            <td>Price</td>
-            <td>Photo</td>
-            <td>Authorname</td>
-            <td>Genre</td>
-            <td>Quality</td>
-            <td>Action</td>
-        </tr>
-        {% for i in data %}
-        <tr>
-            <td>{{forloop.counter}}</td>
-            <td>{{i.ubook_name}}</td>
-            <td>{{i.ubook_desc}}</td>
-            <td>{{i.ubook_price}}</td>
-            <td><img src="{{i.ubook_photo.url}}" width="150" height="150" alt=""></td>
-            <td>{{i.ubook_authname}}</td>
-            <td>{{i.ubook_genre.gen_name}}</td>
-            <td>{{i.ubook_qlty.quality_level}}</td>         
-            <td><a href="{% url 'User:UserBookDel' i.id %}">Delete</a>
-             <a href="{% url 'User:UserBookUpdate' i.id %}">Edit</a></td>
-        </tr>
-        {% endfor %}
-</table>
-</body>
-</html>
-    
+    <div class="container">
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <table class="table">
+                <tr>
+                    <td>Name</td>
+                    <td><input type="text" class="form-control" name="txtname" id="" value="{{editdata.ubook_name}}"></td>
+                </tr>
+                <tr>
+                    <td>Description</td>
+                    <td>
+                        <textarea class="form-control" name="txtdesc" rows="6" cols="20" id="">{{editdata.ubook_desc}}</textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Price</td>
+                    <td><input type="text" class="form-control" name="txtprice" id="" value="{{editdata.ubook_price}}"></td>
+                </tr>
+                <tr>
+                    <td>Photo</td>
+                    <td><input type="file" class="form-control" name="photo" required></td>
+                </tr>
+                <tr>
+                    <td>AuthorName</td>
+                    <td><input type="text" class="form-control" name="txtaname" id="" value="{{editdata.ubook_authname}}"></td>
+                </tr>
+                <tr>
+                    <td>Genre</td>
+                    <td>
+                        <select class="form-select" name="selgenre" id="">
+                            <option value="">---select---</option>
+                            {% for i in genre %}
+                            <option value="{{i.id}}">{{i.gen_name}}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Quality</td>
+                    <td>
+                        <select class="form-select" name="selquality" id="">
+                            <option value="">---select---</option>
+                            {% for i in quality %}
+                            <option value="{{i.id}}">{{i.quality_level}}&nbsp;{{i.quality_rule}}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center">
+                        <input type="submit" class="btn btn-primary" value="Save">
+                        <input type="reset" class="btn btn-secondary" value="Cancel">
+                    </td>
+                </tr>
+            </table>
+        </form>
+
+        <table class="table">
+            <tr>
+                <td>SerialNo</td>
+                <td>Name</td>
+                <td>Description</td>
+                <td>Price</td>
+                <td>Photo</td>
+                <td>Authorname</td>
+                <td>Genre</td>
+                <td>Quality</td>
+                <td>Action</td>
+            </tr>
+            {% for i in data %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.ubook_name}}</td>
+                <td>{{i.ubook_desc}}</td>
+                <td>{{i.ubook_price}}</td>
+                <td><img src="{{i.ubook_photo.url}}" width="150" height="150" alt=""></td>
+                <td>{{i.ubook_authname}}</td>
+                <td>{{i.ubook_genre.gen_name}}</td>
+                <td>{{i.ubook_qlty.quality_level}}</td>         
+                <td>
+                    <a href="{% url 'User:UserBookDel' i.id %}" class="btn btn-danger">Delete</a>
+                    <a href="{% url 'User:UserBookUpdate' i.id %}" class="btn btn-primary">Edit</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
 </body>
 </html>
 {% endblock content %}

@@ -1,3 +1,7 @@
+{% extends 'Guest/Header.html' %}
+{% load static %}
+{% block content %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -61,6 +65,10 @@
                 <td><input type="file" name="fileProof"  required ></td>
             </tr>
             <tr>
+                <td>Address</td>
+                <td><textarea name="txt_address" id="" cols="20" rows="5"></textarea></td>
+            </tr>
+            <tr>
                 
                 <td colspan="2" align="center">
                     <input type="submit" name="btnsubmit" value="Register">
@@ -90,3 +98,5 @@
         });
     });
 </script>
+
+{% endblock content %}

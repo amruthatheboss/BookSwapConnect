@@ -13,7 +13,7 @@ def userRegistration(request):
     district = tbl_district.objects.all()
     if request.method=="POST":
         place = tbl_place.objects.get(id=request.POST.get('sel_place'))
-        tbl_user.objects.create(user_name=request.POST.get("txtname"),user_gender=request.POST.get("gender"),user_contact=request.POST.get("txtcontact"),user_email=request.POST.get("txtemail"),user_photo=request.FILES.get("fileImage"),user_proof=request.FILES.get("fileProof"),user_password=request.POST.get("txtpwd"),place=place)
+        tbl_user.objects.create(user_name=request.POST.get("txtname"),user_gender=request.POST.get("gender"),user_contact=request.POST.get("txtcontact"),user_email=request.POST.get("txtemail"),user_photo=request.FILES.get("fileImage"),user_proof=request.FILES.get("fileProof"),user_password=request.POST.get("txtpwd"),place=place,user_address=request.POST.get("txt_address"))
         return redirect("Guest:userRegistration")
     else:
         return render(request,"Guest/NewUser.html",{"districtdata":district})
@@ -76,8 +76,8 @@ def Agent(request):
 def Login(request):
     if request.method == "POST":
         usercount = tbl_user.objects.filter(user_email=request.POST.get("txt_email"),user_password=request.POST.get("txt_password")).count()
-        publishercount = tbl_publisher.objects.filter(publisher_email=request.POST.get("txt_email"),publisher_password=request.POST.get("txt_password")).count()
-        agentcount = tbl_agent.objects.filter(agent_email=request.POST.get("txt_email"),agent_password=request.POST.get("txt_password")).count()
+        publishercount = tbl_publisher.objects.filter(publisher_email=request.POST.get("txt_email"),publisher_password=request.POST.get("txt_password"),user_status = 1).count()
+        agentcount = tbl_agent.objects.filter(agent_email=request.POST.get("txt_email"),agent_password=request.POST.get("txt_password"),user_status = 1).count()
         admincount = tbl_admin.objects.filter(admin_email=request.POST.get("txt_email"),admin_password=request.POST.get("txt_password")).count()
         
         if usercount > 0:
@@ -108,5 +108,3 @@ def Login(request):
             return render(request,"Guest/Login.html",{"msg":"Invalid Email Or Password"})
     else:
         return render(request,"Guest/Login.html")
-
-

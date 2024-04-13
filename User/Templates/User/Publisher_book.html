@@ -33,7 +33,7 @@
             <div><img src="{{i.pbook_photo.url}}" width="150" height="150" alt=""></div>
             <div>Name :{{i.pbook_name}}</div>
             <div>Rate :{{i.pbook_price}}</div>
-            <div><a href="">Add To Cart</a></div>
+            <div><a href="{% url 'User:Addcart' i.id %}">Add To Cart</a></div>
         </div>
         {% endfor %}
     </div>

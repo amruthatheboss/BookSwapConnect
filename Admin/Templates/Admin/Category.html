@@ -29,7 +29,7 @@
     <tr>
         <td>{{forloop.counter}}</td>
         <td>{{i.category_name}}</td>
-    <td><a href="{% url 'webadmin:CatDel' i.id %}">Delete</a>
+        <td><a href="{% url 'webadmin:CatDel' i.id %}">Delete</a>
         <a href="{% url 'webadmin:Categoryupdate' i.id %}">Edit</a></td>
     {% endfor %}
 </tr>

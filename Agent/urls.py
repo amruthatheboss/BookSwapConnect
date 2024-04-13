@@ -15,4 +15,20 @@ urlpatterns = [
     path('order_returned/<int:id>',views.order_returned,name="order_returned"),
     path('returned_delivered/<int:id>',views.returned_delivered,name="returned_delivered"),
 
+    path('viewproduct/<int:id>',views.viewproduct,name="viewproduct"),
+    path('viewpublisherproduct/<int:id>',views.viewpublisherproduct,name="viewpublisherproduct"),
+    path('myorders/',views.myorders,name="myorders"),
+
+    path('getutouorder/<int:id>',views.getutouorder,name="getutouorder"),
+    path('getptouorder/<int:id>',views.getptouorder,name="getptouorder"),
+
+    path('collect_utou_order/<int:id>',views.collect_utou_order,name="collect_utou_order"),
+    path('delivered_utou_order/<int:id>',views.delivered_utou_order,name="delivered_utou_order"),
+
+    path('collect_ptou_order/<int:id>',views.collect_ptou_order,name="collect_ptou_order"),
+    path('delivered_ptou_order/<int:id>',views.delivered_ptou_order,name="delivered_ptou_order"),
+
+
+    path('logout/',views.logout,name="logout"),
+
 ]

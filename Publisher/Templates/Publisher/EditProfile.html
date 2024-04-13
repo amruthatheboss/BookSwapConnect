@@ -1,3 +1,7 @@
+{% extends 'Publisher/Header.html' %}
+{% load static %}
+{% block content %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,6 +24,7 @@
                     <td>Contact</td>
                     <td><input type="text" name="txtcon" class="textbox" id="" value="{{prodata.user_contact}}"></td>
                 </tr>
+                
                 <tr>
                     <td>Email</td>
                     <td><input type="email" name="txtemail" class="textbox" id="" value="{{prodata.user_email}}"></td>
@@ -39,3 +44,4 @@
     {% endif %}
 </body>
 </html>
+{% endblock content %}

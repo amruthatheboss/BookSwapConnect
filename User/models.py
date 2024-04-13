@@ -8,7 +8,7 @@ from Publisher.models import *
 class tbl_uaddbook(models.Model):
     ubook_name=models.CharField(max_length=15)
     ubook_desc=models.CharField(max_length=50)
-    ubook_price=models.EmailField(max_length=50)
+    ubook_price=models.IntegerField(default=0)
     ubook_photo=models.FileField(upload_to='Assets/UserBookPhoto/')
     ubook_authname=models.CharField(max_length=15)
     ubook_genre=models.ForeignKey(tbl_genre, on_delete=models.CASCADE)
@@ -33,6 +33,7 @@ class tbl_booking(models.Model):
     booking_date = models.DateField(auto_now_add=True)
     user = models.ForeignKey(tbl_user,on_delete=models.CASCADE)
     booking_amount = models.CharField(max_length=30)
+    agent = models.ForeignKey(tbl_agent,on_delete=models.SET_NULL,null=True)
 
 class tbl_cart(models.Model):
     cart_qty = models.IntegerField(default=1)
@@ -67,3 +68,24 @@ class tbl_usergenre(models.Model):
 class tbl_wishlist(models.Model):
     book=models.ForeignKey(tbl_paddbook,on_delete=models.SET_NULL,null=True)
     user=models.ForeignKey(tbl_user,on_delete=models.SET_NULL,null=True)
+
+
+class tbl_ubooking(models.Model):
+    booking_status = models.IntegerField(default=0)
+    booking_date = models.DateField(auto_now_add=True)
+    user = models.ForeignKey(tbl_user,on_delete=models.CASCADE)
+    booking_amount = models.CharField(max_length=30)
+    agent = models.ForeignKey(tbl_agent,on_delete=models.SET_NULL,null=True)
+
+class tbl_ucart(models.Model):
+    cart_qty = models.IntegerField(default=1)
+    cart_status = models.IntegerField(default=0)
+    product = models.ForeignKey(tbl_uaddbook,on_delete=models.CASCADE)
+    booking = models.ForeignKey(tbl_ubooking,on_delete=models.CASCADE)
+
+class tbl_chat(models.Model):
+    chat_content = models.CharField(max_length=500)
+    chat_time = models.DateTimeField()
+    chat_file = models.FileField(upload_to='ChatFiles/')
+    user_from = models.ForeignKey(tbl_user,on_delete=models.CASCADE,related_name="user_from")
+    user_to = models.ForeignKey(tbl_user,on_delete=models.CASCADE,related_name="user_to")

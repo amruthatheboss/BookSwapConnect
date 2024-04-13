@@ -3,7 +3,10 @@
 .banner-area {
 	background: url(../img/banner/banner-bg.jpg) center no-repeat;
 	background-size: cover;
+	filter: contrast(1) hue-rotate(180deg); /* Change the hue to rotate the color */
 	position: relative;
+	min-height: 80vh;
+	// mix-blend-mode: multiply;
 	.fullscreen {
 		@media (max-width: 768px) {
 			height: 650px !important;

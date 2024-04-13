@@ -1,3 +1,7 @@
+{% extends 'User/Header.html' %}
+{% load static %}
+{% block content %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,6 +14,10 @@
         <tr>
             <td>SerialNo</td>
             <td>Name</td>
+            <td>Photo</td>
+            <td>Price</td>
+            <td>Author</td>
+            <td>Action</td>
           
             
         </tr>
@@ -17,8 +25,17 @@
         <tr>
             <td>{{forloop.counter}}</td>
             <td>{{i.book.pbook_name}}</td>
+            <td><img src="{{i.book.pbook_photo.url}}" width="150" height="150" alt=""></td>
+            <td>{{i.book.pbook_price}}</td>
+            <td>{{i.book.pbook_authname}}</td>
+            <td><a href="{% url 'User:WishlistDel' i.id %}">Remove</a>
+               </td>
+            
+            
         </tr>
         {% endfor %}
     </table>
 </body>
 </html>
+
+{% endblock content %}

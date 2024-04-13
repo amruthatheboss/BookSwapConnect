@@ -1,0 +1,31 @@
+{% extends 'User/Header.html' %}
+{% load mathfilters %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <table cellpadding="10">
+        <tr>
+            <td>#</td>
+            <td>Cart Quantity</td>
+            <td>Product</td>
+            <td>Rate</td>
+        </tr>
+        {% for i in data %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.cart_qty}}</td>
+            <td>{{i.product.ubook_name}}</td>
+            <td>{{i.cart_qty|mul:i.product.ubook_price}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
+{% endblock content %}

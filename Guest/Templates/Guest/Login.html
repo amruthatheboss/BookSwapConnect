@@ -30,6 +30,8 @@
 </body>
 </html>
 --->
+
+
 {% load static %}
 <!doctype html>
 <html lang="en">
@@ -93,5 +95,10 @@
       </div>
     </section>
     </form>
+    {% if msg %}
+    <script>
+        alert("{{msg}}")
+    </script>
+    {% endif %}
   </body>
 </html>

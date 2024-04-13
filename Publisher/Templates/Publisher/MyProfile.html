@@ -1,3 +1,7 @@
+{% extends 'Publisher/Header.html' %}
+{% load static %}
+{% block content %}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -25,6 +29,10 @@
                     <td>{{data.publisher_contact}}</td>
                 </tr>
                 <tr>
+                    <td>Address</td>
+                    <td>{{data.publisher_address}}</td>
+                </tr>
+                <tr>
                     <td>Email</td>
                     <td>{{data.publisher_email}}</td>
                 </tr>
@@ -45,3 +53,4 @@
 </body>
 
 </html>
+{% endblock content %}

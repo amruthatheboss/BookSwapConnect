@@ -1,3 +1,7 @@
+{% extends 'Agent/Header.html' %}
+{% load static %}
+{% block content %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +10,7 @@
     <title>Document</title>
 </head>
 <body>
+    <h3>User To User Swap</h3>
     <table cellpadding="10">
         <tr>
             <td>#</td>
@@ -13,6 +18,8 @@
             <td>Book Buy</td>
             <td>Book Sell</td>
             <td>Payment Status</td>
+            <td>From Address</td>
+            <td>To Address</td>
             <td>Swap Status</td>
         </tr>
         {% for i in swaping %}
@@ -28,6 +35,8 @@
                 <span>Not Payed</span>
                 {% endif %}
             </td>
+            <td>{{i.fromuser_id.user_address}}</td>
+            <td>{{i.touser_id.user_address}}</td>
             {% if i.agent == agent %}
             <td>
                 {% if i.swap_status == 1 %}
@@ -68,5 +77,50 @@
         </tr>
         {% endfor %}
     </table>
+
+    <h3>User TO User</h3>
+    <table cellpadding="10">
+        <tr>
+            <td>#</td>
+            <td>Buy User</td>
+            <td>Address</td>
+            <td>Booking Amount </td>
+            <td>Booking Date</td>
+            <td>Action</td>
+        </tr>
+        {% for i in utou %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.user.user_name}}</td>
+            <td>{{i.user.user_address}}</td>
+            <td>{{i.booking_amount}}</td>
+            <td>{{i.booking_date}}</td>
+            <td><a href="{% url 'Agent:viewproduct' i.id %}">View More</a> | <a href="{% url 'Agent:getutouorder' i.id %}">Take Order</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h3>Publisher TO User</h3>
+    <table cellpadding="10">
+        <tr>
+            <td>#</td>
+            <td>Buy User</td>
+            <td>Address</td>
+            <td>Booking Amount </td>
+            <td>Booking Date</td>
+            <td>Action</td>
+        </tr>
+        {% for i in ptou %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.user.user_name}}</td>
+            <td>{{i.user.user_address}}</td>
+            <td>{{i.booking_amount}}</td>
+            <td>{{i.booking_date}}</td>
+            <td><a href="{% url 'Agent:viewpublisherproduct' i.id %}">View More</a> | <a href="{% url 'Agent:getptouorder' i.id %}">Take Order</a></td>
+        </tr>
+        {% endfor %}
+    </table>
 </body>
 </html>
+{% endblock content %}
