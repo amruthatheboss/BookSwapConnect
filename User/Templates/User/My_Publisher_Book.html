@@ -11,28 +11,41 @@
     <title>Document</title>
 </head>
 <body>
-    <table border="1">
-        <tr>
-            <td>SerialNo</td>
-            <td>Photo</td>
-            <td>Name</td>
-            <td>Quantity</td>
-            <td>Price</td>
-            <td>Total</td>
-            <td>Action</td>
-        </tr>
-        {% for i in cart %}
-        <tr>
-            <td>{{forloop.counter}}</td>
-            <td><img src="{{i.product.pbook_photo.url}}" width="150" height="150" alt=""></td>
-            <td>{{i.product.pbook_name}}</td>
-            <td>{{i.cart_qty}}</td>
-            <td>{{i.product.pbook_price}}</td>
-            <td>{{i.cart_qty|mul:i.product.pbook_price}}</td>
-            <td><a href="{% url 'User:rating' i.id %}">Rate</a></td>
-        </tr>
-        {% endfor %}
-</table>
+    <div class="container">
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Serial No</th>
+                    <th>Photo</th>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in cart %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td><img src="{{i.product.pbook_photo.url}}" width="150" height="150" alt=""></td>
+                    <td>{{i.product.pbook_name}}</td>
+                    <td>{{i.cart_qty}}</td>
+                    <td>{{i.product.pbook_price}}</td>
+                    <td>{{i.cart_qty|mul:i.product.pbook_price}}</td>
+                    <td>
+                        {% if i.booking.booking_status == 5%}
+                            <a href="{% url 'User:rating' i.id %}" class="btn btn-primary">Rate</a></td>
+                        {% else %}
+                        Not Delivered
+                        {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <!-- Bootstrap JS (Optional, if needed) -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
 {% endblock content %}

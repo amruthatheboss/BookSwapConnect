@@ -7,54 +7,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>BookEntry</title>
 </head>
 <body>
         
-    <form action="" method="post"   enctype="multipart/form-data">
+    <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-    <table>
-        <tr>
-            <td>Name</td>
-            <td><input type="text" name="txtname" id=""value="{{editdata.pbook_name}}"></td>
-        </tr>
-        <tr>
-            <td>Description</td>
-            <td>
-                <textarea name="txtdesc" rows="6" cols="20" id="" value="">{{editdata.pbook_desc}}</textarea>
-            </td>
-        </tr>
-        <tr>
-            <td>Price</td>
-            <td><input type="text" name="txtprice" id=""value="{{editdata.pbook_price}}"></td>
-        </tr>
-        <tr>
-            <td>Photo</td>
-            <td><input type="file" name="photo"  required ></td>
-        </tr>
-        <tr>
-            <td>AuthorName</td>
-            <td><input type="text" name="txtaname" id=""value="{{editdata.pbook_authname}}"></td>
-        </tr>
-        <tr>
-            <td>Genre</td>
-            <td><select name="selgenre" id="">
-                <option value="">---select---</option>
-                {% for i in genre %}
-                <option value="{{i.id}}">{{i.gen_name}}</option>
-                {% endfor %}
-            </select></td>
-        </tr>
-            <td>Quantity</td>
-            <td><input type="text" name="txtqty" id=""value="{{editdata.pbook_qty}}"></td>
-        </tr>
-        <tr>
-            <td colspan="2" align="center"><input type="submit" value="save">
-            <input type="reset" value="cancel"></td>
-        </tr>
+        <table class="table">
+            <tr>
+                <td>Name</td>
+                <td><input type="text" class="form-control" name="txtname" id="" value="{{editdata.pbook_name}}" title="Name Allows Only Alphabets,Spaces and First Letter Must Be Capital Letter" pattern="^[A-Z]+[a-zA-Z ]*$"/></td>
+            </tr>
+            <tr>
+                <td>Description</td>
+                <td>
+                    <textarea class="form-control" name="txtdesc" rows="6" cols="20" id="">{{editdata.pbook_desc}}</textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>Price</td>
+                <td><input type="text" class="form-control" name="txtprice" id="" value="{{editdata.pbook_price}}"></td>
+            </tr>
+            <tr>
+                <td>Photo</td>
+                <td><input type="file" class="form-control-file" name="photo" required ></td>
+            </tr>
+            <tr>
+                <td>AuthorName</td>
+                <td><input type="text" class="form-control" name="txtaname" id="" value="{{editdata.pbook_authname}}"></td>
+            </tr>
+            <tr>
+                <td>Genre</td>
+                <td>
+                    <select class="form-control" name="selgenre" id="">
+                        <option value="">---select---</option>
+                        {% for i in genre %}
+                        <option value="{{i.id}}">{{i.gen_name}}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Quantity</td>
+                <td><input type="text" class="form-control" name="txtqty" id="" value="{{editdata.pbook_qty}}"></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><input type="submit" class="btn btn-primary" value="save">
+                <input type="reset" class="btn btn-secondary" value="cancel"></td>
+            </tr>
+        </table>
     </form>
-    </table>
-        <table border="1">
+    
+    <table class="table table-bordered">
         <tr>
             <td>SerialNo</td>
             <td>Name</td>
@@ -79,13 +83,17 @@
                 {% if i.pbook_qty == "0" %}
                 <span style="color: red;">Out Of Stock</span>
                 {% else %}
-                {{i.pbook_qty}}</td>         
+                {{i.pbook_qty}}
                 {% endif %}
-            <td><a href="{% url 'Publisher:PublisherBookDel' i.id %}">Delete</a>
-             <a href="{% url 'Publisher:PublisherBookUpdate' i.id %}">Edit</a></td>
+            </td>
+            <td><a href="{% url 'Publisher:PublisherBookDel' i.id %}" class="btn btn-danger">Delete</a>
+             <a href="{% url 'Publisher:PublisherBookUpdate' i.id %}" class="btn btn-primary">Edit</a></td>
         </tr>
         {% endfor %}
-</table>
+    </table>
+
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
     

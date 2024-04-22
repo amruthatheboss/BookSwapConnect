@@ -11,17 +11,20 @@
 </head>
 <body>
     <h3>User To User Swap</h3>
-    <table cellpadding="10">
+    <table class="table table-bordered table-striped">
+    <thead class="table-dark">
         <tr>
-            <td>#</td>
-            <td>User</td>
-            <td>Book Buy</td>
-            <td>Book Sell</td>
-            <td>Payment Status</td>
-            <td>From Address</td>
-            <td>To Address</td>
-            <td>Swap Status</td>
+            <th>#</th>
+            <th>User</th>
+            <th>Book Buy</th>
+            <th>Book Sell</th>
+            <th>Payment Status</th>
+            <th>From Address</th>
+            <th>To Address</th>
+            <th>Swap Status</th>
         </tr>
+    </thead>
+    <tbody>
         {% for i in swaping %}
         <tr>
             <td>{{forloop.counter}}</td>
@@ -30,9 +33,9 @@
             <td>{{i.tobook_id.ubook_name}}</td>
             <td>
                 {% if i.swap_paymentstatus == "1" %}
-                <span>Payed</span>
+                <span class="badge bg-success">Paid</span>
                 {% else %}
-                <span>Not Payed</span>
+                <span class="badge bg-danger">Not Paid</span>
                 {% endif %}
             </td>
             <td>{{i.fromuser_id.user_address}}</td>
@@ -40,105 +43,116 @@
             {% if i.agent == agent %}
             <td>
                 {% if i.swap_status == 1 %}
-                <span>Assigned</span> | <a href="{% url 'Agent:order_collected' i.id %}">Collect</a>
+                <span class="badge bg-info">Assigned</span> | <a href="{% url 'Agent:order_collected' i.id %}" class="btn btn-primary btn-sm">Collect</a>
                 {% elif i.swap_status == 2 %}
-                <span>Collected</span> | <a href="{% url 'Agent:order_delivered' i.id %}">Delivered</a>
+                <span class="badge bg-primary">Collected</span> | <a href="{% url 'Agent:order_delivered' i.id %}" class="btn btn-success btn-sm">Delivered</a>
                 {% elif i.swap_status == 3 %}
-                <span>Delivered</span> | <a href="{% url 'Agent:order_returned' i.id %}">Returned</a>
+                <span class="badge bg-success">Delivered</span> | <a href="{% url 'Agent:order_returned' i.id %}" class="btn btn-warning btn-sm">Returned</a>
                 {% elif i.swap_status == 4 %}
-                <span>Returned</span> | <a href="{% url 'Agent:returned_delivered' i.id %}">Return Delivered</a>
+                <span class="badge bg-warning text-dark">Returned</span> | <a href="{% url 'Agent:returned_delivered' i.id %}" class="btn btn-danger btn-sm">Return Delivered</a>
                 {% elif i.swap_status == 5 %}
-                <span>Return Delivered</span>
+                <span class="badge bg-danger">Return Delivered</span>
                 {% elif i.swap_status == 6 %}
-                <span>Completed</span>
+                <span class="badge bg-secondary">Completed</span>
                 {% else %}
-                <a href="{% url 'Agent:take_order' i.id %}">Take the order</a>
+                <a href="{% url 'Agent:take_order' i.id %}" class="btn btn-outline-primary btn-sm">Take the order</a>
                 {% endif %}
             </td>
             {% else %}
             <td>
                 {% if i.swap_status == "1" %}
-                <span>Assigned</span>
+                <span class="badge bg-info">Assigned</span>
                 {% elif i.swap_status == "2" %}
-                <span>Collected</span>
+                <span class="badge bg-primary">Collected</span>
                 {% elif i.swap_status == "3" %}
-                <span>Delivered</span>
+                <span class="badge bg-success">Delivered</span>
                 {% elif i.swap_status == "4" %}
-                <span>Returned</span>
+                <span class="badge bg-warning text-dark">Returned</span>
                 {% elif i.swap_status == "5" %}
-                <span>Return Delivered</span>
+                <span class="badge bg-danger">Return Delivered</span>
                 {% elif i.swap_status == "6" %}
-                <span>Completed</span>
+                <span class="badge bg-secondary">Completed</span>
                 {% else %}
-                <a href="{% url 'Agent:take_order' i.id %}">Take the order</a>
+                <a href="{% url 'Agent:take_order' i.id %}" class="btn btn-outline-primary btn-sm">Take the order</a>
                 {% endif %}
             </td>
             {% endif %}
         </tr>
         {% endfor %}
-    </table>
+    </tbody>
+</table>
+
 
     <h3>User TO User</h3>
-    <table cellpadding="10">
-        <tr>
-            <td>#</td>
-            <td>Buy User</td>
-            <td>Address</td>
-            <td>Booking Amount </td>
-            <td>Booking Date</td>
-            <td>Action</td>
-        </tr>
-        {% for i in utou %}
-        <tr>
-            <td>{{forloop.counter}}</td>
-            <td>{{i.user.user_name}}</td>
-            <td>{{i.user.user_address}}</td>
-            <td>{{i.booking_amount}}</td>
-            <td>{{i.booking_date}}</td>
-            <td>
-                {% if i.booking_status == 3 %}
-                <span>Assigned</span> | <a href="{% url 'Agent:viewproduct' i.id %}">View More</a> | <a href="{% url 'Agent:collect_utou_order' i.id %}">Collected</a>
-                {% elif i.booking_status == 4 %}
-                <span>Collected</span> | <a href="{% url 'Agent:viewproduct' i.id %}">View More</a> | <a href="{% url 'Agent:delivered_utou_order' i.id %}">Delivered</a>
-                {% elif i.booking_status == 5 %}
-                <span>Delivered</span> | <a href="{% url 'Agent:viewproduct' i.id %}">View More</a>
-                {% else %}
-                <a href="{% url 'Agent:viewproduct' i.id %}">View More</a>
-                {% endif %}
-            </td>
-        </tr>
-        {% endfor %}
+    <table class="table table-striped table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>#</th>
+                <th>Buy User</th>
+                <th>Address</th>
+                <th>Booking Amount</th>
+                <th>Booking Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in utou %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.user.user_name}}</td>
+                <td>{{i.user.user_address}}</td>
+                <td>{{i.booking_amount}}</td>
+                <td>{{i.booking_date}}</td>
+                <td>
+                    {% if i.booking_status == 3 %}
+                    <span class="badge bg-info">Assigned</span> | <a href="{% url 'Agent:viewproduct' i.id %}" class="btn btn-sm btn-primary">View More</a> | <a href="{% url 'Agent:collect_utou_order' i.id %}" class="btn btn-sm btn-success">Collected</a>
+                    {% elif i.booking_status == 4 %}
+                    <span class="badge bg-primary">Collected</span> | <a href="{% url 'Agent:viewproduct' i.id %}" class="btn btn-sm btn-primary">View More</a> | <a href="{% url 'Agent:delivered_utou_order' i.id %}" class="btn btn-sm btn-success">Delivered</a>
+                    {% elif i.booking_status == 5 %}
+                    <span class="badge bg-success">Delivered</span> | <a href="{% url 'Agent:viewproduct' i.id %}" class="btn btn-sm btn-primary">View More</a>
+                    {% else %}
+                    <a href="{% url 'Agent:viewproduct' i.id %}" class="btn btn-sm btn-primary">View More</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
     </table>
 
     <h3>Publisher TO User</h3>
-    <table cellpadding="10">
-        <tr>
-            <td>#</td>
-            <td>Buy User</td>
-            <td>Address</td>
-            <td>Booking Amount </td>
-            <td>Booking Date</td>
-            <td>Action</td>
-        </tr>
-        {% for i in ptou %}
-        <tr>
-            <td>{{forloop.counter}}</td>
-            <td>{{i.user.user_name}}</td>
-            <td>{{i.user.user_address}}</td>
-            <td>{{i.booking_amount}}</td>
-            <td>{{i.booking_date}}</td>
-            <td>
-                {% if i.booking_status == 3 %}
-                <span>Assigned</span> | <a href="{% url 'Agent:viewproduct' i.id %}">View More</a> | <a href="{% url 'Agent:collect_ptou_order' i.id %}">Collected</a>
-                {% elif i.booking_status == 4 %}
-                <span>Collected</span> | <a href="{% url 'Agent:viewproduct' i.id %}">View More</a> | <a href="{% url 'Agent:delivered_ptou_order' i.id %}">Delivered</a>
-                {% elif i.booking_status == 5 %}
-                <span>Delivered</span> | <a href="{% url 'Agent:viewproduct' i.id %}">View More</a>
-                {% else %}
-                <a href="{% url 'Agent:viewpublisherproduct' i.id %}">View More</a></td>
-                {% endif %}
-        </tr>
-        {% endfor %}
+    <table class="table table-striped table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>#</th>
+                <th>Buy User</th>
+                <th>Address</th>
+                <th>Booking Amount</th>
+                <th>Booking Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in ptou %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.user.user_name}}</td>
+                <td>{{i.user.user_address}}</td>
+                <td>{{i.booking_amount}}</td>
+                <td>{{i.booking_date}}</td>
+                <td>
+                    {% if i.booking_status == 3 %}
+                    <span class="badge bg-info">Assigned</span> | <a href="{% url 'Agent:viewproduct' i.id %}" class="btn btn-sm btn-primary">View More</a> | <a href="{% url 'Agent:collect_ptou_order' i.id %}" class="btn btn-sm btn-success">Collected</a>
+                    {% elif i.booking_status == 4 %}
+                    <span class="badge bg-primary">Collected</span> | <a href="{% url 'Agent:viewproduct' i.id %}" class="btn btn-sm btn-primary">View More</a> | <a href="{% url 'Agent:delivered_ptou_order' i.id %}" class="btn btn-sm btn-success">Delivered</a>
+                    {% elif i.booking_status == 5 %}
+                    <span class="badge bg-success">Delivered</span> | <a href="{% url 'Agent:viewproduct' i.id %}" class="btn btn-sm btn-primary">View More</a>
+                    {% else %}
+                    <a href="{% url 'Agent:viewpublisherproduct' i.id %}" class="btn btn-sm btn-primary">View More</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
     </table>
 </body>
 </html>

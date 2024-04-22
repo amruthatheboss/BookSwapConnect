@@ -8,119 +8,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>MyBooking</title>
 </head>
 <body>
     <h3>Request To</h3>
-    <table cellpadding="10">
-        <tr>
-            <td>#</td>
-            <td>User</td>
-            <td>Book Buy</td>
-            <td>Book Sell</td>
-            <td>Payment Status</td>
-            <td>Agent</td>
-            <td>Swap Status</td>
-        </tr>
-        {% for i in swaping %}
-        <tr>
-            <td>{{forloop.counter}}</td>
-            <td>{{i.fromuser_id.user_name}}</td>
-            <td>{{i.frombook_id.ubook_name}}</td>
-            <td>{{i.tobook_id.ubook_name}}</td>
-            <td>
-                {% if i.swap_paymentstatus == "1" %}
-                <span>Payed</span>
-                {% else %}
-                <span>Not Payed</span>
-                {% endif %}
-            </td>
-            <td>
-                {% if i.agent == "" %}
-                <span style="color: red;">N/A</span>
-                {% else %}
-                {{i.agent.agent_name}}
-                {% endif %}
-            </td>
-            <td>
-                {% if i.swap_status == 1 %}
-                <span>Assigned</span> | <a href="{% url 'User:chatpage' i.touser_id_id %}">Chat</a>
-                {% elif i.swap_status == 2 %}
-                <span>Collected</span> | <a href="{% url 'User:chatpage' i.touser_id_id %}">Chat</a>
-                {% elif i.swap_status == 3 %}
-                <span>Delivered</span> | <a href="{% url 'User:chatpage' i.touser_id_id %}">Chat</a>
-                {% elif i.swap_status == 4 %}
-                <span>Returned</span> | <a href="{% url 'User:chatpage' i.touser_id_id %}">Chat</a>
-                {% elif i.swap_status == 5 %}
-                <span>Return Delivered</span> | <a href="{% url 'User:chatpage' i.touser_id_id %}">Chat</a>
-                {% elif i.swap_status == 6 %}
-                <span>Completed</span> | <a href="{% url 'User:userrating' i.id %}">Rate</a>
-                {% elif i.swap_status == 0 and i.swap_paymentstatus == 1 and i.fromuser_id == user %}
-                <span>You Not Payed</span> | <a href="{% url 'User:swappayment' i.id %}">Payment</a>
-                {% elif i.swap_status == 0 and i.swap_paymentstatus == 2 and i.fromuser_id == user %}
-                <span>Both Payed</span> | <a href="{% url 'User:chatpage' i.touser_id_id %}">Chat</a>
-                {% else %}
-                <span>Not Assigned</span> | <a href="{% url 'User:chatpage' i.fromuser_id_id %}">Chat</a>
-                {% endif %}
-            </td>
-        </tr>
-        {% endfor %}
+    <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>#</th>
+                <th>User</th>
+                <th>Book Buy</th>
+                <th>Book Sell</th>
+                <th>Payment Status</th>
+                <th>Agent</th>
+                <th>Swap Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in swaping %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.fromuser_id.user_name}}</td>
+                <td>{{i.frombook_id.ubook_name}}</td>
+                <td>{{i.tobook_id.ubook_name}}</td>
+                <td>
+                    {% if i.swap_paymentstatus == "1" %}
+                    <span>Payed</span>
+                    {% else %}
+                    <span>Not Payed</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if i.agent == "" %}
+                    <span style="color: red;">N/A</span>
+                    {% else %}
+                    {{i.agent.agent_name}}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if i.swap_status == 1 %}
+                    <span>Assigned</span> | <a href="{% url 'User:chatpage' i.touser_id_id %}" class="btn btn-sm btn-primary">Chat</a>
+                    {% elif i.swap_status == 2 %}
+                    <span>Collected</span> | <a href="{% url 'User:chatpage' i.touser_id_id %}" class="btn btn-sm btn-primary">Chat</a>
+                    {% elif i.swap_status == 3 %}
+                    <span>Delivered</span> | <a href="{% url 'User:chatpage' i.touser_id_id %}" class="btn btn-sm btn-primary">Chat</a>
+                    {% elif i.swap_status == 4 %}
+                    <span>Returned</span> | <a href="{% url 'User:chatpage' i.touser_id_id %}" class="btn btn-sm btn-primary">Chat</a>
+                    {% elif i.swap_status == 5 %}
+                    <span>Return Delivered</span> | <a href="{% url 'User:chatpage' i.touser_id_id %}" class="btn btn-sm btn-primary">Chat</a>
+                    {% elif i.swap_status == 6 %}
+                    <span>Completed</span> | <a href="{% url 'User:userrating' i.id %}">Rate</a>
+                    {% elif i.swap_status == 0 and i.swap_paymentstatus == 1 and i.fromuser_id == user %}
+                    <span>You Not Payed</span> | <a href="{% url 'User:swappayment' i.id %}" class="btn btn-sm btn-warning">Payment</a>
+                    {% elif i.swap_status == 0 and i.swap_paymentstatus == 2 and i.fromuser_id == user %}
+                    <span>Both Payed</span> | <a href="{% url 'User:chatpage' i.touser_id_id %}" class="btn btn-sm btn-primary">Chat</a>
+                    {% else %}
+                    <span>Not Assigned</span> | <a href="{% url 'User:chatpage' i.fromuser_id_id %}" class="btn btn-sm btn-primary">Chat</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
     </table>
 
     <h3>Request From</h3>
-    <table cellpadding="10">
-        <tr>
-            <td>#</td>
-            <td>User</td>
-            <td>Book Buy</td>
-            <td>Book Sell</td>
-            <td>Payment Status</td>
-            <td>Agent</td>
-            <td>Swap Status</td>
-        </tr>
-        {% for i in fromuser %}
-        <tr>
-            <td>{{forloop.counter}}</td>
-            <td>{{i.fromuser_id.user_name}}</td>
-            <td>{{i.frombook_id.ubook_name}}</td>
-            <td>{{i.tobook_id.ubook_name}}</td>
-            <td>
-                {% if i.swap_paymentstatus == "1" %}
-                <span>Payed</span>
-                {% else %}
-                <span>Not Payed</span>
-                {% endif %}
-            </td>
-            <td>
-                {% if i.agent == "" %}
-                <span style="color: red;">N/A</span>
-                {% else %}
-                {{i.agent.agent_name}}
-                {% endif %}
-            </td>
-            <td>
-                {% if i.swap_status == 1 %}
-                <span>Assigned</span> | <a href="{% url 'User:chatpage' i.touser_id_id %}">Chat</a>
-                {% elif i.swap_status == 2 %}
-                <span>Collected</span> | <a href="{% url 'User:chatpage' i.touser_id_id %}">Chat</a>
-                {% elif i.swap_status == 3 %}
-                <span>Delivered</span> | <a href="{% url 'User:chatpage' i.touser_id_id %}">Chat</a>
-                {% elif i.swap_status == 4 %}
-                <span>Returned</span> | <a href="{% url 'User:chatpage' i.touser_id_id %}">Chat</a>
-                {% elif i.swap_status == 5 %}
-                <span>Return Delivered</span> | <a href="{% url 'User:chatpage' i.touser_id_id %}">Chat</a>
-                {% elif i.swap_status == 6 %}
-                <span>Completed</span> | <a href="{% url 'User:userrating' i.id %}">Rate</a>
-                {% elif i.swap_status == 0 and i.swap_paymentstatus == 1 and i.touser_id == user %}
-                <span>You Payed</span> | <a href="{% url 'User:chatpage' i.touser_id_id %}">Chat</a>
-                {% elif i.swap_status == 0 and i.swap_paymentstatus == 2 and i.touser_id == user %}
-                <span>Both Payed</span> | <a href="{% url 'User:chatpage' i.touser_id_id %}">Chat</a>
-                {% else %}
-                <span>Not Assigned</span> | <a href="{% url 'User:chatpage' i.touser_id_id %}">Chat</a>
-                {% endif %}
-            </td>
-        </tr>
-        {% endfor %}
+    <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>#</th>
+                <th>User</th>
+                <th>Book Buy</th>
+                <th>Book Sell</th>
+                <th>Payment Status</th>
+                <th>Agent</th>
+                <th>Swap Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in fromuser %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.fromuser_id.user_name}}</td>
+                <td>{{i.frombook_id.ubook_name}}</td>
+                <td>{{i.tobook_id.ubook_name}}</td>
+                <td>
+                    {% if i.swap_paymentstatus == "1" %}
+                    <span>Payed</span>
+                    {% else %}
+                    <span>Not Payed</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if i.agent == "" %}
+                    <span style="color: red;">N/A</span>
+                    {% else %}
+                    {{i.agent.agent_name}}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if i.swap_status == 1 %}
+                    <span>Assigned</span> | <a href="{% url 'User:chatpage' i.touser_id_id %}" class="btn btn-sm btn-primary">Chat</a>
+                    {% elif i.swap_status == 2 %}
+                    <span>Collected</span> | <a href="{% url 'User:chatpage' i.touser_id_id %}" class="btn btn-sm btn-primary">Chat</a>
+                    {% elif i.swap_status == 3 %}
+                    <span>Delivered</span> | <a href="{% url 'User:chatpage' i.touser_id_id %}" class="btn btn-sm btn-primary">Chat</a>
+                    {% elif i.swap_status == 4 %}
+                    <span>Returned</span> | <a href="{% url 'User:chatpage' i.touser_id_id %}" class="btn btn-sm btn-primary">Chat</a>
+                    {% elif i.swap_status == 5 %}
+                    <span>Return Delivered</span> | <a href="{% url 'User:chatpage' i.touser_id_id %}" class="btn btn-sm btn-primary">Chat</a>
+                    {% elif i.swap_status == 6 %}
+                    <span>Completed</span> | <a href="{% url 'User:userrating' i.id %}">Rate</a>
+                    {% elif i.swap_status == 0 and i.swap_paymentstatus == 1 and i.touser_id == user %}
+                    <span>You Payed</span> | <a href="{% url 'User:chatpage' i.touser_id_id %}" class="btn btn-sm btn-primary">Chat</a>
+                    {% elif i.swap_status == 0 and i.swap_paymentstatus == 2 and i.touser_id == user %}
+                    <span>Both Payed</span> | <a href="{% url 'User:chatpage' i.touser_id_id %}" class="btn btn-sm btn-primary">Chat</a>
+                    {% else %}
+                    <span>Not Assigned</span> | <a href="{% url 'User:chatpage' i.touser_id_id %}" class="btn btn-sm btn-primary">Chat</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
     </table>
 </body>
 </html>

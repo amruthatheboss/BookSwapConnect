@@ -9,15 +9,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NewUser</title>
 </head>
+
 <body>
-    
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        <table align="center">
+        <table class="table table-bordered container mt-5">
             <tr>
                 <td>District</td>
                 <td>
-                    <select name="sel_district" id="sel_district">
+                    <select name="sel_district" id="sel_district" class="form-control">
                         <option value="">...Select...</option>
                         {% for i in districtdata %}
                         <option value="{{i.id}}">{{i.district_name}}</option>
@@ -28,58 +28,64 @@
             <tr>
                 <td>Place</td>
                 <td>
-                    <select name="sel_place" id="sel_place">
+                    <select name="sel_place" id="sel_place" class="form-control">
                         <option value="">...Select...</option>
                     </select>
                 </td>
             </tr>
             <tr>
                 <td>Name</td>
-                <td><input type="text" name="txtname" placeholder="Enter Name" required ></td>
+                <td><input type="text" name="txtname" placeholder="Enter Name" required class="form-control" required title="Name Allows Only Alphabets,Spaces and First Letter Must Be Capital Letter" pattern="^[A-Z]+[a-zA-Z ]*$"/></td>
             </tr>
             <tr>
                 <td>Gender</td>
                 <td>
-                    <input type="radio" name="gender" value="Male" >Male
-                    <input type="radio" name="gender" value="Female" >Female
+                    <div class="form-check">
+                        <input type="radio" name="gender" id="male" value="Male" class="form-check-input">
+                        <label for="male" class="form-check-label">Male</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" name="gender" id="female" value="Female" class="form-check-input">
+                        <label for="female" class="form-check-label">Female</label>
+                    </div>
                 </td>
             </tr>
             <tr>
                 <td>Contact</td>
-                <td><input type="text" name="txtcontact" placeholder="Enter Contact" required ></td>
+                <td><input type="text" name="txtcontact" placeholder="Enter Contact" required class="form-control" pattern="[7-9]{1}[0-9]{9}" 
+                    title="Phone number with 7-9 and remaing 9 digit with 0-9"/></td>
             </tr>
             <tr>
                 <td>Email</td>
-                <td><input type="email" name="txtemail" placeholder="Enter Email" required ></td>
+                <td><input type="email" name="txtemail" placeholder="Enter Email" required class="form-control"></td>
             </tr>
             <tr>
                 <td>Password</td>
-                <td><input type="password" name="txtpwd" placeholder="Enter Password" required ></td>
+                <td><input type="password" name="txtpwd" placeholder="Enter Password" required class="form-control" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"></td>
             </tr>
             <tr>
                 <td>Photo</td>
-                <td><input type="file" name="fileImage"  required ></td>
+                <td><input type="file" name="fileImage" required class="form-control-file"></td>
             </tr>
             <tr>
                 <td>Proof</td>
-                <td><input type="file" name="fileProof"  required ></td>
+                <td><input type="file" name="fileProof" required class="form-control-file"></td>
             </tr>
             <tr>
                 <td>Address</td>
-                <td><textarea name="txt_address" id="" cols="20" rows="5"></textarea></td>
+                <td><textarea name="txt_address" id="" cols="20" rows="5" class="form-control"></textarea></td>
             </tr>
             <tr>
-                
                 <td colspan="2" align="center">
-                    <input type="submit" name="btnsubmit" value="Register">
-                    <input type="reset" name="btncancel" value="Cancel">
+                    <input type="submit" name="btnsubmit" value="Register" class="btn btn-primary">
+                    <input type="reset" name="btncancel" value="Cancel" class="btn btn-secondary">
                 </td>
             </tr>
         </table>
     </form>
 
-    
-
+    <!-- Bootstrap JS (Optional, if you need Bootstrap's JavaScript features) -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
 

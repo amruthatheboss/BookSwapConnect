@@ -12,28 +12,29 @@
 </head>
 <body>
     <div class="container-fluid d-bg-image">
-    <form action="" method="post">
-        {% csrf_token %}
-        <div class="d-profile">
-            <table class="d-card" style="color: black;" align="center" cellpadding="10px">
-                <tr> 
-                    <td>Name</td>
-                    <td><input type="text" class="textbox" name="txtname" id="" value="{{prodata.agent_name}}"></td>
-                </tr>
-                <tr>
-                    <td>Contact</td>
-                    <td><input type="text" name="txtcon" class="textbox" id="" value="{{prodata.agent_contact}}"></td>
-                </tr>
-                <tr>
-                    <td>Email</td>
-                    <td><input type="email" name="txtemail" class="textbox" id="" value="{{prodata.agent_email}}"></td>
-                </tr>
-                <tr>
-                    <td colspan="2" align="center"><input class="d-card-button" type="submit" value="Update" name="btnsub"></td>
-                </tr>
-            </table>
-        </div>
-    </form>
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class="d-profile">
+                <table class="d-card table" style="color: black;" align="center" cellpadding="10px">
+                    <tr> 
+                        <td>Name</td>
+                        <td><input type="text" class="form-control" name="txtname" id="" value="{{prodata.agent_name}}" title="Name Allows Only Alphabets,Spaces and First Letter Must Be Capital Letter" pattern="^[A-Z]+[a-zA-Z ]*$"/></td>
+                    </tr>
+                    <tr>
+                        <td>Contact</td>
+                        <td><input type="text" name="txtcon" class="form-control" id="" value="{{prodata.agent_contact}}" pattern="[7-9]{1}[0-9]{9}" 
+                            title="Phone number with 7-9 and remaing 9 digit with 0-9"/></td>
+                    </tr>
+                    <tr>
+                        <td>Email</td>
+                        <td><input type="email" name="txtemail" class="form-control" id="" value="{{prodata.agent_email}}"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" align="center"><input class="d-card-button btn btn-primary" type="submit" value="Update" name="btnsub"></td>
+                    </tr>
+                </table>
+            </div>
+        </form>
     </div>
     {% if msg %}
     <script>
@@ -41,6 +42,10 @@
         window.location = "{% url 'Agent:my_pro' %}"
     </script>
     {% endif %}
+    <!-- Add Bootstrap JS scripts here -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
 {% endblock content %}

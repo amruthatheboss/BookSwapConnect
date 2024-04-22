@@ -10,45 +10,50 @@
     <title>Document</title>
 </head>
 <body>
-    
+
     <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-    <table>
-        <tr>
-            <td>Name</td>
-            <td><input type="text" name="txtname" id=""value="{{editdata.publisher_name}}" required></td>
-        </tr>
-        <tr>
-            <td>Contact</td>
-            <td><input type="text" name="txtcontact" id=""value="{{editdata.publisher_contact}}" required></td>
-        </tr>
-        <tr>
-            <td>Address</td>
-            <td>
-                <textarea name="txtadd" rows="6" cols="20" required></textarea>
-            </td>
-        </tr>
-        <tr>
-            <td>Photo</td>
-            <td><input type="file" name="photo"  required ></td>
-        </tr>
-        <tr>
-            <td>Proof</td>
-            <td><input type="file" name="proof" required></td>
-        </tr>
-        <tr>
-            <td>Email</td>
-            <td><input type="email" name="txtemail" id=""value="{{editdata.publisher_email}}" required></td></tr>
-        <tr>
-            <td>Password</td>
-            <td><input type="password" name="txtpassword" id=""value="{{editdata.publisher_password}}" required></td>
-        </tr>
-        <tr>
-            <td colspan="2" align="center"><input type="submit" value="Register">
-            <input type="reset" value="cancel"></td>
-        </tr>
+        <table class="table">
+            <tr>
+                <td>Name</td>
+                <td><input type="text" name="txtname" id="" value="{{editdata.publisher_name}}" class="form-control" required title="Name Allows Only Alphabets,Spaces and First Letter Must Be Capital Letter" pattern="^[A-Z]+[a-zA-Z ]*$"/></td>
+            </tr>
+            <tr>
+                <td>Contact</td>
+                <td><input type="text" name="txtcontact" id="" value="{{editdata.publisher_contact}}" class="form-control" required pattern="[7-9]{1}[0-9]{9}" 
+                    title="Phone number with 7-9 and remaing 9 digit with 0-9"/></td>
+            </tr>
+            <tr>
+                <td>Address</td>
+                <td>
+                    <textarea name="txtadd" rows="6" cols="20" class="form-control" required></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>Photo</td>
+                <td><input type="file" name="photo" class="form-control" required></td>
+            </tr>
+            <tr>
+                <td>Proof</td>
+                <td><input type="file" name="proof" class="form-control" required></td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td><input type="email" name="txtemail" id="" value="{{editdata.publisher_email}}" class="form-control" required></td>
+            </tr>
+            <tr>
+                <td>Password</td>
+                <td><input type="password" name="txtpassword" id="" value="{{editdata.publisher_password}}" class="form-control" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><input type="submit" value="Register" class="btn btn-primary">
+                <input type="reset" value="cancel" class="btn btn-secondary"></td>
+            </tr>
+        </table>
     </form>
-</table>
-</body>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-LVwvuRd43Pa2R2iCiK3EABw3K3sgHXb18j9z/CsOVWsfad/08jqJGusWYJ3bO++F" crossorigin="anonymous"></script>
+    </body>
 </html>
 {% endblock content %}

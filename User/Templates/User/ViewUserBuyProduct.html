@@ -10,22 +10,33 @@
     <title>Document</title>
 </head>
 <body>
-    <table cellpadding="10">
-        <tr>
-            <td>#</td>
-            <td>Cart Quantity</td>
-            <td>Product</td>
-            <td>Rate</td>
-        </tr>
-        {% for i in data %}
-        <tr>
-            <td>{{forloop.counter}}</td>
-            <td>{{i.cart_qty}}</td>
-            <td>{{i.product.ubook_name}}</td>
-            <td>{{i.cart_qty|mul:i.product.ubook_price}}</td>
-        </tr>
-        {% endfor %}
-    </table>
+    <div class="container">
+        <table class="table table-bordered table-striped table-hover" cellpadding="10">
+            <thead class="thead-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Cart Quantity</th>
+                    <th>Product</th>
+                    <th>Rate</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in data %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{i.cart_qty}}</td>
+                    <td>{{i.product.ubook_name}}</td>
+                    <td>{{i.cart_qty|mul:i.product.ubook_price}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Bootstrap JS (Optional) - Only needed if you're using Bootstrap JS features -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
 {% endblock content %}

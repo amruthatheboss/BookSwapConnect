@@ -120,20 +120,68 @@ def UserBookupdate(request,eid):
 
 
 def searchbook(request):
-    if 'uid' in request.session:              
+    if 'uid' in request.session: 
+        district = tbl_district.objects.all()  
+        gen = tbl_genre.objects.all()           
         uid = request.session['uid']
         user = tbl_user.objects.get(id=uid)
         ubook = tbl_uaddbook.objects.filter(ubook_status=0).exclude(user_id=user)
         # print(ubook.query)
-        return render(request,"User/Search.html",{'data':ubook})
+        return render(request,"User/Search.html",{'data':ubook,"district":district,"gen":gen})
     else:
         return redirect("Guest:Login")
 
 def ajaxsearch(request):
     uid = request.session['uid']
     user = tbl_user.objects.get(id=uid)
-    ubook = tbl_uaddbook.objects.filter(ubook_name__istartswith=request.GET.get("bookName"),ubook_status=0).exclude(user=user)
-    return render(request,"User/ajaxsearch.html",{'data':ubook})
+    if ((request.GET.get("bookName")!="") and (request.GET.get("pid")!="") and (request.GET.get("gid")!="")):
+        print("1")
+        ubook = tbl_uaddbook.objects.filter((Q(ubook_name__istartswith=request.GET.get("bookName")) | Q(ubook_authname__istartswith=request.GET.get("bookName"))) & Q(user__place=request.GET.get("pid")) & Q(ubook_genre=request.GET.get("gid")) & Q(ubook_status=0)).exclude(user=user)
+        return render(request,"User/ajaxsearch.html",{'data':ubook})
+    elif ((request.GET.get("bookName")!="") and (request.GET.get("did")!="") and (request.GET.get("gid")!="")):
+        print("2")
+        ubook = tbl_uaddbook.objects.filter((Q(ubook_name__istartswith=request.GET.get("bookName")) | Q(ubook_authname__istartswith=request.GET.get("bookName"))) & Q(user__place__district=request.GET.get("did")) & Q(ubook_genre=request.GET.get("gid")) & Q(ubook_status=0)).exclude(user=user)
+        return render(request,"User/ajaxsearch.html",{'data':ubook})
+    elif ((request.GET.get("bookName")!="") & (request.GET.get("pid")!="")):
+        print("3")
+        ubook = tbl_uaddbook.objects.filter((Q(ubook_name__istartswith=request.GET.get("bookName")) | Q(ubook_authname__istartswith=request.GET.get("bookName"))) & Q(user__place=request.GET.get("pid")) & Q(ubook_status=0)).exclude(user=user)
+        return render(request,"User/ajaxsearch.html",{'data':ubook})
+    elif ((request.GET.get("bookName")!="") & (request.GET.get("did")!="")):
+        print("4")
+        ubook = tbl_uaddbook.objects.filter((Q(ubook_name__istartswith=request.GET.get("bookName")) | Q(ubook_authname__istartswith=request.GET.get("bookName"))) & Q(user__place__district=request.GET.get("did")) & Q(ubook_status=0)).exclude(user=user)
+        return render(request,"User/ajaxsearch.html",{'data':ubook})
+    elif ((request.GET.get("bookName")!="") & (request.GET.get("gid")!="")):
+        print("5")
+        ubook = tbl_uaddbook.objects.filter((Q(ubook_name__istartswith=request.GET.get("bookName")) | Q(ubook_authname__istartswith=request.GET.get("bookName"))) & Q(ubook_genre=request.GET.get("gid")) & Q(ubook_status=0)).exclude(user=user)
+        return render(request,"User/ajaxsearch.html",{'data':ubook})
+    elif ((request.GET.get("pid")!="") & (request.GET.get("gid")!="")):
+        print("7")
+        ubook = tbl_uaddbook.objects.filter(Q(user__place__district=request.GET.get("did")) & Q(ubook_genre=request.GET.get("gid")) & Q(ubook_status=0)).exclude(user=user)
+        return render(request,"User/ajaxsearch.html",{'data':ubook})
+    elif ((request.GET.get("did")!="") & (request.GET.get("gid")!="")):
+        print("6")
+        ubook = tbl_uaddbook.objects.filter((Q(ubook_name__istartswith=request.GET.get("bookName")) | Q(ubook_authname__istartswith=request.GET.get("bookName"))) & Q(ubook_genre=request.GET.get("gid")) & Q(user__place__district=request.GET.get("did")) & Q(ubook_status=0)).exclude(user=user)
+        return render(request,"User/ajaxsearch.html",{'data':ubook})
+    elif request.GET.get("bookName")!="":
+        print("8")
+        ubook = tbl_uaddbook.objects.filter((Q(ubook_name__istartswith=request.GET.get("bookName")) | Q(ubook_authname__istartswith=request.GET.get("bookName"))) & Q(ubook_status=0)).exclude(user=user)
+        return render(request,"User/ajaxsearch.html",{'data':ubook})
+    elif request.GET.get("pid")!="":
+        print("9")
+        ubook = tbl_uaddbook.objects.filter(Q(user__place=request.GET.get("pid")) & Q(ubook_status=0)).exclude(user=user)
+        return render(request,"User/ajaxsearch.html",{'data':ubook})
+    elif request.GET.get("did")!="":
+        print("10")
+        ubook = tbl_uaddbook.objects.filter(Q(user__place__district=request.GET.get("did")) & Q(ubook_status=0)).exclude(user=user)
+        return render(request,"User/ajaxsearch.html",{'data':ubook})
+    elif request.GET.get("gid")!="":
+        print("11")
+        ubook = tbl_uaddbook.objects.filter(Q(ubook_genre=request.GET.get("gid")) & Q(ubook_status=0)).exclude(user=user)
+        return render(request,"User/ajaxsearch.html",{'data':ubook})
+    else:
+        print("12")
+        ubook = tbl_uaddbook.objects.filter(ubook_status=0)
+        return render(request,"User/ajaxsearch.html",{'data':ubook})
 
 
 def Viewmore(request,bid):
@@ -307,6 +355,7 @@ def searchpbook(request):
         parry=[]
         avg=0          
         pbook = tbl_paddbook.objects.all()
+        gen = tbl_genre.objects.all() 
         # print(ubook.query)
         for i in pbook:
             wdata=tbl_paddbook.objects.get(id=i.id)
@@ -323,7 +372,7 @@ def searchpbook(request):
                 parry.append(0)
             # print(parry)
         datas=zip(pbook,parry)
-        return render(request,"User/searchp.html",{'data':datas,"ar":ar})
+        return render(request,"User/searchp.html",{'data':datas,"ar":ar,"gen":gen})
     else:
         return redirect("Guest:Login")
 
@@ -331,23 +380,78 @@ def ajaxpsearch(request):
     ar=[1,2,3,4,5]
     parry=[]
     avg=0 
-    pbook = tbl_paddbook.objects.filter(pbook_name__istartswith=request.GET.get("bookName"))
-    for i in pbook:
-        wdata=tbl_paddbook.objects.get(id=i.id)
-        tot=0
-        ratecount=tbl_rating.objects.filter(book=wdata).count()
-        if ratecount>0:
-            ratedata=tbl_rating.objects.filter(book=wdata)
-            for j in ratedata:
-                tot=tot+j.rating_data
-                avg=tot//ratecount
-                #print(avg)
-            parry.append(avg)
-        else:
-            parry.append(0)
-        # print(parry)
-    datas=zip(pbook,parry)
-    return render(request,"User/ajaxpsearch.html",{'data':datas,"ar":ar})
+    if (request.GET.get("bookName")!="") and (request.GET.get("gid")!=""):
+        pbook = tbl_paddbook.objects.filter((Q(pbook_name__istartswith=request.GET.get("bookName")) | Q(pbook_authname__istartswith=request.GET.get("bookName"))) & Q(pbook_genre=request.GET.get("gid")))
+        for i in pbook:
+            wdata=tbl_paddbook.objects.get(id=i.id)
+            tot=0
+            ratecount=tbl_rating.objects.filter(book=wdata).count()
+            if ratecount>0:
+                ratedata=tbl_rating.objects.filter(book=wdata)
+                for j in ratedata:
+                    tot=tot+j.rating_data
+                    avg=tot//ratecount
+                    #print(avg)
+                parry.append(avg)
+            else:
+                parry.append(0)
+            # print(parry)
+        datas=zip(pbook,parry)
+        return render(request,"User/ajaxpsearch.html",{'data':datas,"ar":ar})
+    elif request.GET.get("bookName")!="":
+        pbook = tbl_paddbook.objects.filter((Q(pbook_name__istartswith=request.GET.get("bookName")) | Q(pbook_authname__istartswith=request.GET.get("bookName"))))
+        for i in pbook:
+            wdata=tbl_paddbook.objects.get(id=i.id)
+            tot=0
+            ratecount=tbl_rating.objects.filter(book=wdata).count()
+            if ratecount>0:
+                ratedata=tbl_rating.objects.filter(book=wdata)
+                for j in ratedata:
+                    tot=tot+j.rating_data
+                    avg=tot//ratecount
+                    #print(avg)
+                parry.append(avg)
+            else:
+                parry.append(0)
+            # print(parry)
+        datas=zip(pbook,parry)
+        return render(request,"User/ajaxpsearch.html",{'data':datas,"ar":ar})
+    elif request.GET.get("gid")!="":
+        pbook = tbl_paddbook.objects.filter(pbook_genre=request.GET.get("gid"))
+        for i in pbook:
+            wdata=tbl_paddbook.objects.get(id=i.id)
+            tot=0
+            ratecount=tbl_rating.objects.filter(book=wdata).count()
+            if ratecount>0:
+                ratedata=tbl_rating.objects.filter(book=wdata)
+                for j in ratedata:
+                    tot=tot+j.rating_data
+                    avg=tot//ratecount
+                    #print(avg)
+                parry.append(avg)
+            else:
+                parry.append(0)
+            # print(parry)
+        datas=zip(pbook,parry)
+        return render(request,"User/ajaxpsearch.html",{'data':datas,"ar":ar})
+    else:
+        pbook = tbl_paddbook.objects.all()
+        for i in pbook:
+            wdata=tbl_paddbook.objects.get(id=i.id)
+            tot=0
+            ratecount=tbl_rating.objects.filter(book=wdata).count()
+            if ratecount>0:
+                ratedata=tbl_rating.objects.filter(book=wdata)
+                for j in ratedata:
+                    tot=tot+j.rating_data
+                    avg=tot//ratecount
+                    #print(avg)
+                parry.append(avg)
+            else:
+                parry.append(0)
+            # print(parry)
+        datas=zip(pbook,parry)
+        return render(request,"User/ajaxpsearch.html",{'data':datas,"ar":ar})
 
 def ViewPmore(request,bid):
     if 'uid' in request.session:              

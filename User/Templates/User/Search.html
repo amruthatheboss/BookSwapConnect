@@ -8,13 +8,51 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Document</title>
+	<style>
+		.form-control {
+			display: block;
+			width: 25%;
+			height: calc(2.25rem + 2px);
+			padding: .375rem .75rem;
+			font-size: 1rem;
+			line-height: 1.5;
+			color: #495057;
+			background-color: #fff;
+			background-clip: padding-box;
+			border: 1px solid #ced4da;
+			border-radius: .25rem;
+			transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+		}
+
+		.search-con {
+			display: flex;
+			gap: 1rem;
+		}
+	</style>
 </head>
 
 <body>
 
 	<!-- single product slide -->
 	<div class="container">
-		<input type="text" class="form-control" name="search" placeholder="Search here...." id="search" onkeyup="SearchKey(this.value)">
+		<div class="search-con">
+			<input type="text" class="form-control" name="search" placeholder="Search here...." id="searchHOtel" onkeyup="SearchKey()">
+			<select name="sel_district" id="sel_district" class="form-control" onchange="SearchKey()">
+				<option value="">District</option>
+				{% for i in district %}
+				<option value="{{i.id}}">{{i.district_name}}</option>
+				{% endfor %}
+			</select>
+			<select name="sel_place" id="sel_place" class="form-control" onchange="SearchKey()">
+				<option value="">Place</option>
+			</select>
+			<select name="sel_gen" id="sel_gen" class="form-control" onchange="SearchKey()">
+				<option value="">Genre</option>
+				{% for i in gen %}
+				<option value="{{i.id}}">{{i.gen_name}}</option>
+				{% endfor %}
+			</select>
+		</div>
 
 		<div class="row" id="ajaxData">
 			<!-- single product -->
@@ -60,16 +98,47 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 <script>
-	function SearchKey(bookName) {
+	$("#sel_district").change(function () {
+        var did = $(this).val();
+		var bookName = document.getElementById("searchHOtel").value
+		var pid = document.getElementById("sel_place").value
+		var gid = document.getElementById("sel_gen").value
+        var ur = "{% url 'Guest:ajaxplace' %}"
+        $.ajax({
+            url: ur,
+            data: { did: did, },
+            success: function (data) {
+                $("#sel_place").html(data);
 
-		var ur = "{% url 'User:Ajaxsearch' %}"
-		$.ajax({
-			url: ur,
-			data: { bookName: bookName },
-			success: function (data) {
-				$("#ajaxData").html(data);
-			},
-		});
+				var ur = "{% url 'User:Ajaxsearch' %}"
+				$.ajax({
+					url: ur,
+					data: { bookName: bookName,pid: pid,did: did,gid: gid, },
+					success: function (data) {
+						$("#ajaxData").html(data);
+					},
+				});
+            },
+        });
+    });
+
+	function SearchKey() {
+	var bookName = document.getElementById("searchHOtel").value
+	console.log(bookName);
+	var did = document.getElementById("sel_district").value
+	console.log(did);
+	var pid = document.getElementById("sel_place").value
+	console.log(pid);
+	var gid = document.getElementById("sel_gen").value
+	console.log(gid);
+	var ur = "{% url 'User:Ajaxsearch' %}"
+	$.ajax({
+		url: ur,
+		data: { bookName: bookName,pid: pid,did: did,gid: gid, },
+		success: function (data) {
+			$("#ajaxData").html(data);
+		},
+	});
 	}
 </script>
 

@@ -19,9 +19,12 @@ def userRegistration(request):
         return render(request,"Guest/NewUser.html",{"districtdata":district})
 
 def ajaxplace(request):
-    dis = tbl_district.objects.get(id=request.GET.get("did"))
-    place = tbl_place.objects.filter(district=dis)
-    return render(request,"Guest/AjaxPlace.html",{"placedata":place})
+    if request.GET.get("did")!= "":
+        dis = tbl_district.objects.get(id=request.GET.get("did"))
+        place = tbl_place.objects.filter(district=dis)
+        return render(request,"Guest/AjaxPlace.html",{"placedata":place})
+    else:
+        return render(request,"Guest/AjaxPlace.html")
     
 def Publisher(request):
     publisher = tbl_publisher.objects.all()

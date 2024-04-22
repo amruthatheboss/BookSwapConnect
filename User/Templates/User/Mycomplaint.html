@@ -10,24 +10,35 @@
     <title>Document</title>
 </head>
 <body>
-    <table border="1">
-        <tr>
-            <td>SerialNo</td>
-            <td>Title</td>
-            <td>Complaint</td>
-            <td>Reply</td>
-            <td>Date</td>
-        </tr>
-        {% for i in complaint %}
-        <tr>
-            <td>{{forloop.counter}}</td>
-            <td>{{i.complaint_title}}</td>
-            <td>{{i.complaint_desc}}</td>
-            <td>{{i.complaint_reply}}</td>
-            <td>{{i.complaint_date}}</td>
-        </tr>
-        {% endfor %}
-</table>
+    <div class="container">
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>SerialNo</th>
+                    <th>Title</th>
+                    <th>Complaint</th>
+                    <th>Reply</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in complaint %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{i.complaint_title}}</td>
+                    <td>{{i.complaint_desc}}</td>
+                    <td>{{i.complaint_reply}}</td>
+                    <td>{{i.complaint_date}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Bootstrap JS (optional, if needed) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
 {% endblock content %}

@@ -11,32 +11,43 @@
     <title>Document</title>
 </head>
 <body>
-    <table border="1" cellpadding="10">
-        <tr>
-            <td>SerialNo</td>
-            <td>Date</td>
-            <td>Amount</td>
-            <td>Action</td>
-        </tr>
-        {% for i in booking %}
-        <tr>
-            <td>{{forloop.counter}}</td>
-            <td>{{i.booking_date}}</td>
-            <td>{{i.booking_amount}}</td>
-            <td>
-                {% if i.booking_status == 3 %}
-                <span>Assigned</span> | <a href="{% url 'User:mypublisherbook' i.id %}">View Book</a>
-                {% elif i.booking_status == 4 %}
-                <span>Collected</span> | <a href="{% url 'User:mypublisherbook' i.id %}">View Book</a>
-                {% elif i.booking_status == 5 %}
-                <span>Delivered</span> | <a href="{% url 'User:mypublisherbook' i.id %}">View Book</a>
-                {% else %}
-                <a href="{% url 'Agent:viewpublisherproduct' i.id %}">View More</a></td>
-                {% endif %}
-            </td>
-        </tr>
-        {% endfor %}
-</table>
+    <div class="container">
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Serial No</th>
+                    <th>Date</th>
+                    <th>Amount</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in booking %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{i.booking_date}}</td>
+                    <td>{{i.booking_amount}}</td>
+                    <td>
+                        {% if i.booking_status == 3 %}
+                        <span>Assigned</span> | <a href="{% url 'User:mypublisherbook' i.id %}" class="btn btn-primary">View Book</a>
+                        {% elif i.booking_status == 4 %}
+                        <span>Collected</span> | <a href="{% url 'User:mypublisherbook' i.id %}" class="btn btn-primary">View Book</a>
+                        {% elif i.booking_status == 5 %}
+                        <span>Delivered</span> | <a href="{% url 'User:mypublisherbook' i.id %}" class="btn btn-primary">View Book</a>
+                        {% else %}
+                        <a href="{% url 'User:mypublisherbook'  i.id %}" class="btn btn-info">View More</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
 

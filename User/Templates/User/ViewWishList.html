@@ -10,31 +10,34 @@
     <title>Document</title>
 </head>
 <body>
-    <table border="1">
-        <tr>
-            <td>SerialNo</td>
-            <td>Name</td>
-            <td>Photo</td>
-            <td>Price</td>
-            <td>Author</td>
-            <td>Action</td>
-          
-            
-        </tr>
-        {% for i in data %}
-        <tr>
-            <td>{{forloop.counter}}</td>
-            <td>{{i.book.pbook_name}}</td>
-            <td><img src="{{i.book.pbook_photo.url}}" width="150" height="150" alt=""></td>
-            <td>{{i.book.pbook_price}}</td>
-            <td>{{i.book.pbook_authname}}</td>
-            <td><a href="{% url 'User:WishlistDel' i.id %}">Remove</a>
-               </td>
-            
-            
-        </tr>
-        {% endfor %}
-    </table>
+    <div class="container">
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>SerialNo</th>
+                    <th>Name</th>
+                    <th>Photo</th>
+                    <th>Price</th>
+                    <th>Author</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in data %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ i.book.pbook_name }}</td>
+                    <td><img src="{{ i.book.pbook_photo.url }}" class="img-fluid" width="150" height="150" alt=""></td>
+                    <td>{{ i.book.pbook_price }}</td>
+                    <td>{{ i.book.pbook_authname }}</td>
+                    <td><a href="{% url 'User:WishlistDel' i.id %}" class="btn btn-danger">Remove</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
 

@@ -36,12 +36,40 @@
             align-items: center;
             gap: 2rem;
         }
+		.form-control {
+			display: block;
+			width: 25%;
+			height: calc(2.25rem + 2px);
+			padding: .375rem .75rem;
+			font-size: 1rem;
+			line-height: 1.5;
+			color: #495057;
+			background-color: #fff;
+			background-clip: padding-box;
+			border: 1px solid #ced4da;
+			border-radius: .25rem;
+			transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+		}
+
+		.search-con {
+			display: flex;
+            justify-content: center;
+			gap: 1rem;
+		}
     </style>
 </head>
 <body>
     
     
-    <input type="text" class="form-control" onkeyup="search(this.value)" name="search" placeholder="Search here...." id="search" >
+    <div class="search-con">
+        <input type="text" class="form-control" onkeyup="search()" name="search" placeholder="Search here...." id="searchBook" >
+    <select name="sel_gen" id="sel_gen" class="form-control" onchange="search()">
+        <option value="">Genre</option>
+        {% for i in gen %}
+        <option value="{{i.id}}">{{i.gen_name}}</option>
+        {% endfor %}
+    </select>
+    </div>
     <div class="main" id="ajaxData">
         {% for i,j in data %}
         <div class="sub">
@@ -78,13 +106,15 @@
 {% endif %}
 
 <script>
-    function search(bookName) {
+    function search() {
     // console.log('hi');
         // var bookName = $(this).val();
+        var bookName = document.getElementById("searchBook").value
+        var gid = document.getElementById("sel_gen").value
         var ur = "{% url 'User:ajaxpsearch' %}"
         $.ajax({
             url: ur,
-            data: {  bookName:bookName },
+            data: {  bookName:bookName,gid: gid },
             success: function (data) {
                 $("#ajaxData").html(data);
             },

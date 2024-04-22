@@ -46,7 +46,7 @@ def changepassword(request):
 
 def vieworders(request):
     if 'sid' in request.session:
-        swap = tbl_swap.objects.filter(swap_paymentstatus__lt=1)
+        swap = tbl_swap.objects.filter(swap_paymentstatus__lte=2)
         agentid = tbl_agent.objects.get(id=request.session["sid"])
         utou = tbl_ubooking.objects.filter(booking_status__gte=2)
         ptou = tbl_booking.objects.filter(booking_status__gte=2)
